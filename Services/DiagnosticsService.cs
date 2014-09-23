@@ -8,6 +8,7 @@ namespace WpfTemplate.Services
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
+    using Models;
     using NLog;
 
     public sealed class DiagnosticsService : IDiagnosticsService, IDisposable
