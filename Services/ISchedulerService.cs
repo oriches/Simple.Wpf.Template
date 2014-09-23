@@ -1,4 +1,4 @@
-namespace WpfTemplate
+namespace WpfTemplate.Services
 {
     using System.Reactive.Concurrency;
 
