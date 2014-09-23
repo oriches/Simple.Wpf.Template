@@ -2,6 +2,7 @@ namespace WpfTemplate.Services
 {
     using System;
     using System.Reactive;
+    using Models;
 
     public interface IDiagnosticsService
     {
