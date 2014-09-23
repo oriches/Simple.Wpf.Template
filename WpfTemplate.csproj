@@ -86,7 +86,7 @@
     <Compile Include="Services\IIdleService.cs" />
     <Compile Include="Commands\IObservableCommand.cs" />
     <Compile Include="Services\ISchedulerService.cs" />
-    <Compile Include="Memory.cs" />
+    <Compile Include="Models\Memory.cs" />
     <Compile Include="Commands\ObservableCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Services\SchedulerService.cs" />
