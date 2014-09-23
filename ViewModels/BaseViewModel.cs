@@ -5,6 +5,7 @@ namespace WpfTemplate.ViewModels
     using System.ComponentModel;
     using System.Linq.Expressions;
     using System.Reactive.Disposables;
+    using Helpers;
 
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
