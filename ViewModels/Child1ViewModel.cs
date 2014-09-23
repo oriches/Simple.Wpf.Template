@@ -1,4 +1,4 @@
-namespace WpfTemplate
+namespace WpfTemplate.ViewModels
 {
     public sealed class Child1ViewModel : BaseViewModel
     {
