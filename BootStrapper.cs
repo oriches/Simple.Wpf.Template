@@ -4,6 +4,7 @@ namespace WpfTemplate
     using System.Reflection;
     using Autofac;
     using Autofac.Core;
+    using ViewModels;
 
     public static class BootStrapper
     {
@@ -33,7 +34,12 @@ namespace WpfTemplate
 
             var builder = new ContainerBuilder();
             var assembly = Assembly.GetExecutingAssembly();
-           
+
+            builder.RegisterAssemblyTypes(assembly)
+                .Where(t => t.Name.EndsWith("Service"))
+                .SingleInstance()
+                .AsImplementedInterfaces();
+            
             builder.RegisterAssemblyTypes(assembly)
                 .Where(t => t.Name.EndsWith("ViewModel"));
             
