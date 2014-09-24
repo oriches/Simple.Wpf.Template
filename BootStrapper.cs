@@ -42,6 +42,8 @@ namespace WpfTemplate
             
             builder.RegisterAssemblyTypes(assembly)
                 .Where(t => t.Name.EndsWith("ViewModel"));
+
+            builder.RegisterType<Heartbeat>();
             
             _rootScope = builder.Build();
         }
