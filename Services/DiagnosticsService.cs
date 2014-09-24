@@ -122,7 +122,7 @@ namespace WpfTemplate.Services
             get
             {
                 return _bufferedInactiveObservable.Select(CalculateMemoryValues)
-                    .DistinctUntilChanged(WpfTemplate.Memory.Comparer);
+                    .DistinctUntilChanged(Models.Memory.Comparer);
             }
         }
 
