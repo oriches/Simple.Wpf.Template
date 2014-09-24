@@ -2,9 +2,12 @@ namespace WpfTemplate
 {
     using System;
     using System.Diagnostics;
+    using System.Reactive;
+    using System.Reactive.Concurrency;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Windows;
+    using System.Windows.Threading;
     using Extensions;
     using NLog;
     using Services;
@@ -36,8 +39,6 @@ namespace WpfTemplate
             var viewModel = BootStrapper.RootVisual;
             var window = new MainWindow { DataContext = viewModel };
 
-            window.Show();
-
             window.Closed += (s, a) =>
             {
 
@@ -66,6 +67,7 @@ namespace WpfTemplate
                     .SelectMany(x => dianosticsService.Memory.Take(1), (x, y) => y)
                     .Subscribe(x => Logger.Info("Heartbeat, total memory - {0}", x.WorkingSetPrivateAsString())));
             }
+
 #if DEBUG
             _disposable.Add(ObserveUiFreeze());
 #endif
@@ -74,22 +76,25 @@ namespace WpfTemplate
        
         private static IDisposable ObserveUiFreeze()
         {
-            var watermark = Constants.UiFreeze.TotalMilliseconds;
+            var timer = new DispatcherTimer(DispatcherPriority.Normal)
+            {
+                Interval = Constants.UiFreezeTimer
+            };
+
             var previous = DateTime.Now;
+            timer.Tick += (sender, args) =>
+            {
+                var current = DateTime.Now;
+                var delta = current - previous;
+                previous = current;
 
-            return BootStrapper.Resolve<IIdleService>()
-                .Idling()
-                .Select(x =>
+                if (delta > Constants.UiFreeze)
                 {
-                    var current = DateTime.Now;
-                    var delta = current - previous;
+                    Debug.WriteLine("UI Freeze = {0} ms", delta.TotalMilliseconds);
+                }
+            };
 
-                    previous = current;
-
-                    return delta;
-                })
-                .Where(x => x.TotalMilliseconds > watermark)
-                .Subscribe(x => Debug.WriteLine(string.Format("UI Freeze = {0} ms", x.TotalMilliseconds)));
-        }
+            timer.Start();
+            return Disposable.Create(timer.Stop);}
     }
 }
