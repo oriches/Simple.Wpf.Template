@@ -100,11 +100,9 @@ namespace WpfTemplate.Services
                 .SubscribeOn(schedulerService.TaskPool)
                 .ObserveOn(schedulerService.TaskPool)
                 .CombineLatest(idleService.Idling().Buffer(Constants.DiagnosticsIdleBuffer, schedulerService.TaskPool).Where(x => x.Any()), (x, y) => x)
-                .Publish();
+                .Replay(1);
 
             _disposable = _bufferedInactiveObservable.Connect();
-
-            Logger.Info("Ready");
         }
 
         public void Dispose()
@@ -156,7 +154,7 @@ namespace WpfTemplate.Services
             Logger.Warn(exception);
         }
 
-        private Memory CalculateMemoryValues(Counters counters)
+        private static Memory CalculateMemoryValues(Counters counters)
         {
             try
             {
