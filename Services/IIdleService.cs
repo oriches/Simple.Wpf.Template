@@ -5,6 +5,6 @@ namespace WpfTemplate.Services
 
     public interface IIdleService
     {
-        IObservable<Unit> Idling();
+        IObservable<Unit> Idling { get; }
     }
 }
