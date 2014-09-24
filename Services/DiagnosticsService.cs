@@ -99,7 +99,7 @@ namespace WpfTemplate.Services
                 .DelaySubscription(Constants.DiagnosticsSubscriptionDelay, schedulerService.TaskPool)
                 .SubscribeOn(schedulerService.TaskPool)
                 .ObserveOn(schedulerService.TaskPool)
-                .CombineLatest(idleService.Idling().Buffer(Constants.DiagnosticsIdleBuffer, schedulerService.TaskPool).Where(x => x.Any()), (x, y) => x)
+                .CombineLatest(idleService.Idling.Buffer(Constants.DiagnosticsIdleBuffer, schedulerService.TaskPool).Where(x => x.Any()), (x, y) => x)
                 .Replay(1);
 
             _disposable = _bufferedInactiveObservable.Connect();
