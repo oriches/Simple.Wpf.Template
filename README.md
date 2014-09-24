@@ -1,6 +1,9 @@
 Simple.Wpf.Template
 ===================
 
-template for the classes I require to create a simple MVVM WPF app using Autofac, NLog &amp; Rx.
+template for creating an MVVM based WPF application using Autofac, NLog & Rx.
+
+It includes a heartbeat & memory diagnostics classes,
+Also includes UI freeze functionality to track when dispatcher thread is overloaded,
 
 Note: No solution file so need to create this and enable nuget package restore...
