@@ -27,9 +27,9 @@ namespace WpfTemplate.Services
             _disposable = Disposable.Empty;
         }
 
-        public IObservable<Unit> Idling()
+        public IObservable<Unit> Idling
         {
-            return _idleObservable.Select(x => Unit.Default);
+            get { return _idleObservable.Select(x => Unit.Default); }
         }
 
         public void Dispose()
