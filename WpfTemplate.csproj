@@ -82,6 +82,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Constants.cs" />
+    <Compile Include="Heartbeat.cs" />
     <Compile Include="Services\DiagnosticsService.cs" />
     <Compile Include="Duration.cs" />
     <Compile Include="Services\IDiagnosticsService.cs" />
