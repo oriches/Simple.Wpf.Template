@@ -34,7 +34,7 @@ namespace WpfTemplate.Services
 
         public void Dispose()
         {
-            using (Duration.Measure(Logger, "Dispose"))
+            using (WpfTemplate.Duration.Measure(Logger, "Dispose"))
             {
                 _disposable.Dispose();
             }
