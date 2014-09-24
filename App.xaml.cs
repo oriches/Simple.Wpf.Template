@@ -1,6 +1,7 @@
 namespace WpfTemplate
 {
     using System.Windows;
+    using Views;
 
     public partial class App : Application
     {
