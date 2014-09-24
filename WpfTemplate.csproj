@@ -90,8 +90,10 @@
     <Compile Include="NLogFormattedThreadIdLayoutRenderer.cs" />
     <Compile Include="Services\DiagnosticsService.cs" />
     <Compile Include="Duration.cs" />
+    <Compile Include="Services\GesturesService.cs" />
     <Compile Include="Services\IDiagnosticsService.cs" />
     <Compile Include="Services\IdleService.cs" />
+    <Compile Include="Services\IGestureService.cs" />
     <Compile Include="Services\IIdleService.cs" />
     <Compile Include="Commands\IObservableCommand.cs" />
     <Compile Include="Services\ISchedulerService.cs" />
