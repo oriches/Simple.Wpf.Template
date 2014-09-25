@@ -2,11 +2,11 @@ namespace WpfTemplate
 {
     using System;
     using System.Reactive;
+    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using NLog;
-    using Services;
-
+    
     public sealed class Heartbeat : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -14,9 +14,9 @@ namespace WpfTemplate
         private readonly IConnectableObservable<Unit> _listen;
         private readonly IDisposable _disposable;
 
-        public Heartbeat(ISchedulerService schedulerService)
+        public Heartbeat()
         {
-            _listen = Observable.Interval(Constants.Heartbeat, schedulerService.TaskPool)
+            _listen = Observable.Interval(Constants.Heartbeat, TaskPoolScheduler.Default)
                 .Select(x => Unit.Default)
                 .Publish();
 
