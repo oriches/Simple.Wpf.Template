@@ -61,11 +61,14 @@ namespace WpfTemplate
             if (Logger.IsInfoEnabled)
             {
                 var dianosticsService = BootStrapper.Resolve<IDiagnosticsService>();
-                var heartBeat = BootStrapper.Resolve<Heartbeat>();
+                var heartbeat = new Heartbeat();
 
-                _disposable.Add(heartBeat.Listen
+                var listenDisposable = heartbeat.Listen
                     .SelectMany(x => dianosticsService.Memory.Take(1), (x, y) => y)
-                    .Subscribe(x => Logger.Info("Heartbeat, total memory - {0}", x.WorkingSetPrivateAsString())));
+                    .Subscribe(x => Logger.Info("Heartbeat, total memory - {0}", x.WorkingSetPrivateAsString()));
+
+                _disposable.Add(listenDisposable);
+                _disposable.Add(heartbeat);
             }
 
 #if DEBUG
