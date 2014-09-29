@@ -5,6 +5,7 @@ namespace WpfTemplate.ViewModels
     using System.ComponentModel;
     using System.Linq.Expressions;
     using System.Reactive.Disposables;
+    using Extensions;
     using Helpers;
 
     public abstract class BaseViewModel : INotifyPropertyChanged
@@ -42,10 +43,7 @@ namespace WpfTemplate.ViewModels
             public void Dispose()
             {
                 _target._suspendedNotifications = null;
-                foreach (var property in _properties)
-                {
-                    _target.OnPropertyChanged(property);
-                }
+                _properties.ForEach(x => _target.OnPropertyChanged(x));
             }
         }
 
