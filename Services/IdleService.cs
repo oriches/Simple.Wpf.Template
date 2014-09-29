@@ -6,6 +6,7 @@ namespace WpfTemplate.Services
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using System.Windows;
+    using Extensions;
     using NLog;
 
     public sealed class IdleService : IIdleService, IDisposable
@@ -29,7 +30,7 @@ namespace WpfTemplate.Services
 
         public IObservable<Unit> Idling
         {
-            get { return _idleObservable.Select(x => Unit.Default); }
+            get { return _idleObservable.AsUnit(); }
         }
 
         public void Dispose()
