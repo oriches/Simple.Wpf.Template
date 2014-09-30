@@ -19,6 +19,10 @@ namespace WpfTemplate.Services
         public IdleService(ISchedulerService schedulerService)
         {
             var mainWindow = Application.Current.MainWindow;
+            if (mainWindow == null)
+            {
+                throw new Exception("Main window has not been created yet!");
+            }
 
             _idleObservable = Observable.FromEventPattern(h => mainWindow.Dispatcher.Hooks.DispatcherInactive += h,
                 h => mainWindow.Dispatcher.Hooks.DispatcherInactive -= h, schedulerService.TaskPool)
