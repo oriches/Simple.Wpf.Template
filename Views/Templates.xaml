@@ -38,4 +38,34 @@
 
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type viewModels:DiagnosticsViewModel}">
+
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="170" />
+                <ColumnDefinition Width="170" />
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="1"
+                       Grid.Row="0"
+                       HorizontalAlignment="Left"
+                       Text="{Binding Path=Cpu, Mode=OneWay}"/>
+
+            <TextBlock Grid.Column="2"
+                       Grid.Row="0"
+                       HorizontalAlignment="Left"
+                       Text="{Binding Path=ManagedMemory, Mode=OneWay}" />
+
+            <TextBlock Grid.Column="3"
+                       Grid.Row="0"
+                       HorizontalAlignment="Left"
+                       Text="{Binding Path=TotalMemory, Mode=OneWay}" />
+
+        </Grid>
+
+    </DataTemplate>
+
 </ResourceDictionary>
