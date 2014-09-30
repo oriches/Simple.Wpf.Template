@@ -34,12 +34,13 @@ namespace WpfTemplate
 
             BootStrapper.Start();
 
-            var viewModel = BootStrapper.RootVisual;
-            var window = new MainWindow { DataContext = viewModel };
+            var window = new MainWindow();
+
+            // The window has to be created before the root visual - all to do with the idling service initialising correctly...
+            window.DataContext = BootStrapper.RootVisual;
 
             window.Closed += (s, a) =>
             {
-
                 // Performance counters can make a process hang when exiting if they haven't finished
                 // initialising, put in this hack to make sure they've initialised.
                 BootStrapper.Resolve<IDiagnosticsService>().Initialised.Wait();
