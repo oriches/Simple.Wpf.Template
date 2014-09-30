@@ -114,6 +114,7 @@
     <Compile Include="Commands\ObservableCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Services\SchedulerService.cs" />
+    <Compile Include="ViewModels\DiagnosticsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
