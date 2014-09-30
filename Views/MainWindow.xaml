@@ -7,54 +7,68 @@
         xmlns:viewModels="clr-namespace:WpfTemplate.ViewModels"
         Title="MainWindow"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}">
-   
-    <TabControl>
-        <TabItem Header="Item 1">
-            <StackPanel>
+    
+    <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-                <TextBlock>
+        <TabControl Grid.Column="0"
+                    Grid.Row="0">
+            <TabItem Header="Item 1">
+                <StackPanel>
+
+                    <TextBlock>
             <Run Text="Title: " />
             <Run Text="{Binding Path=Title, Mode=OneTime}" />
-                </TextBlock>
+                    </TextBlock>
 
-                <Border BorderBrush="Red"
-                        BorderThickness="2"
-                        Margin="10"
-                        Height="200"
-                        Width="100">
+                    <Border BorderBrush="Red"
+                            BorderThickness="2"
+                            Margin="10"
+                            Height="200"
+                            Width="100">
 
-                    <ContentPresenter Content="{Binding Path=Child1, Mode=OneTime}" />
+                        <ContentPresenter Content="{Binding Path=Child1, Mode=OneTime}" />
 
-                </Border>
+                    </Border>
 
-                <Border BorderBrush="Blue"
-                        BorderThickness="2"
-                        Margin="10"
-                        Height="200"
-                        Width="100">
+                    <Border BorderBrush="Blue"
+                            BorderThickness="2"
+                            Margin="10"
+                            Height="200"
+                            Width="100">
 
-                    <ContentPresenter Content="{Binding Path=Child2, Mode=OneTime}" />
+                        <ContentPresenter Content="{Binding Path=Child2, Mode=OneTime}" />
 
-                </Border>
+                    </Border>
 
-            </StackPanel>
-        </TabItem>
-        <TabItem Header="Item 2">
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Item 2">
 
-            <TextBox Text="Test">
-                <TextBox.ContextMenu>
-                    <ContextMenu>
+                <TextBox Text="Test">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
                             <MenuItem Header="1" />
                             <Separator />
                             <MenuItem Header="2" />
                             <MenuItem Header="3" />
-                            
-                    </ContextMenu>
-                </TextBox.ContextMenu>
-            </TextBox>
-            
-        </TabItem>
+
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+
+            </TabItem>
+
+        </TabControl>
         
-    </TabControl>
+        <ContentPresenter  Grid.Column="0"
+                           Grid.Row="1"
+                           Content="{Binding Path=Diagnostics, Mode=OneWay}" />
+
+    </Grid>
     
 </Window>
