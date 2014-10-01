@@ -32,7 +32,6 @@ namespace WpfTemplate.ViewModels
             _disposable = new CompositeDisposable
             {
                 diagnosticsService.CpuUtilisation
-                    .DistinctUntilChanged()
                     .Select(x => x < 10
                         ? string.Format("CPU: 0{0} %", x.ToString(CultureInfo.InvariantCulture))
                         : string.Format("CPU: {0} %", x.ToString(CultureInfo.InvariantCulture)))
@@ -46,7 +45,6 @@ namespace WpfTemplate.ViewModels
                     }),
 
                 diagnosticsService.Memory
-                    .DistinctUntilChanged(Memory.Comparer)
                     .Select(x =>
                     {
                         var managedMemory = string.Format("Managed Memory: {0}", x.ManagedAsString());
