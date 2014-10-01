@@ -14,15 +14,19 @@ namespace WpfTemplate
         private readonly IConnectableObservable<Unit> _listen;
         private readonly IDisposable _disposable;
 
-        public Heartbeat()
+        public Heartbeat() : this(Constants.Heartbeat)
         {
-            _listen = Observable.Interval(Constants.Heartbeat, TaskPoolScheduler.Default)
+        }
+
+        public Heartbeat(TimeSpan interval)
+        {
+            _listen = Observable.Interval(interval, TaskPoolScheduler.Default)
                 .Select(x => Unit.Default)
                 .Publish();
 
             _disposable = _listen.Connect();
         }
-
+        
         public IObservable<Unit> Listen { get { return _listen; } }
 
         public void Dispose()
