@@ -1,6 +1,7 @@
 namespace WpfTemplate.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Reactive;
     using System.Reactive.Subjects;
     using Microsoft.Reactive.Testing;
@@ -47,14 +48,14 @@ namespace WpfTemplate.Tests
         }
 
         [Test]
-        public void cpu_utilisation_pumps()
+        public void cpu_utilisation_pumps_when_idling()
         {
             // ARRANGE
-            int? cpu = null;
+            var values = new List<int>();
 
             var service = new DiagnosticsService(_idleService.Object, _schedulerService);
             service.CpuUtilisation
-                .Subscribe(x => { cpu = x; });
+                .Subscribe(values.Add);
 
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10));
 
@@ -63,19 +64,24 @@ namespace WpfTemplate.Tests
 
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10));
 
+            _idling.OnNext(Unit.Default);
+
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10));
+
             // ASSERT
-            Assert.That(cpu, Is.Not.Null);
+            Assert.That(values, Is.Not.Empty);
+            Assert.That(values.Count, Is.EqualTo(2));
         }
 
         [Test]
-        public void memory_pumps()
+        public void memory_pumps_when_idling()
         {
             // ARRANGE
-            Memory value = null;
+            var values = new List<Memory>();
 
             var service = new DiagnosticsService(_idleService.Object, _schedulerService);
             service.Memory
-                .Subscribe(x => { value = x; });
+                .Subscribe(values.Add);
 
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10));
 
@@ -84,10 +90,15 @@ namespace WpfTemplate.Tests
 
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10));
 
-            // ASSERT
-            Assert.That(value, Is.Not.Null);
-        }
+            _idling.OnNext(Unit.Default);
 
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10));
+
+            // ASSERT
+            Assert.That(values, Is.Not.Empty);
+            Assert.That(values.Count, Is.EqualTo(2));
+        }
+        
         [Test]
         public void disposing_stops_streams_pumping()
         {
