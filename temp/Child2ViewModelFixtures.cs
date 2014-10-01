@@ -1,5 +1,8 @@
 namespace WpfTemplate.Tests
 {
+    using System;
+    using System.Windows.Input;
+    using Extensions;
     using Moq;
     using NUnit.Framework;
     using Services;
@@ -22,6 +25,23 @@ namespace WpfTemplate.Tests
 
             // ASSERT
             gestureService.VerifyAll();
+        }
+
+        [Test]
+        public void disposing_clears_commands()
+        {
+            // ARRANGE
+            var gestureService = new Mock<IGestureService>(MockBehavior.Strict);
+            gestureService.Setup(x => x.SetBusy()).Verifiable();
+
+            var viewModel = new Child2ViewModel(gestureService.Object);
+            
+            // ACT
+            viewModel.Dispose();
+
+            // ASSERT
+            var commandProperties = TestHelper.PropertiesImplementingInterface<ICommand>(viewModel);
+            commandProperties.ForEach(x => Assert.That(x.GetValue(viewModel, null), Is.Null));
         }
     }
 }
