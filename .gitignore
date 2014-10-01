@@ -1,0 +1,4 @@
+*.baml
+obj/Debug/App.g.cs
+obj/Debug/App.g.i.cs
+*.cache
