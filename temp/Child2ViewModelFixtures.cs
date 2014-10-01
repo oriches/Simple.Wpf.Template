@@ -32,8 +32,6 @@ namespace WpfTemplate.Tests
         {
             // ARRANGE
             var gestureService = new Mock<IGestureService>(MockBehavior.Strict);
-            gestureService.Setup(x => x.SetBusy()).Verifiable();
-
             var viewModel = new Child2ViewModel(gestureService.Object);
             
             // ACT
