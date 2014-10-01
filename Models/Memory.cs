@@ -1,34 +1,39 @@
 namespace WpfTemplate.Models
 {
-    using System.Collections.Generic;
+    using System;
 
-    public sealed class Memory
+    public sealed class Memory : IEquatable<Memory>
     {
-        private sealed class WorkingSetPrivateManagedEqualityComparer : IEqualityComparer<Memory>
+        public bool Equals(Memory other)
         {
-            public bool Equals(Memory x, Memory y)
-            {
-                if (ReferenceEquals(x, y)) return true;
-                if (ReferenceEquals(x, null)) return false;
-                if (ReferenceEquals(y, null)) return false;
-                if (x.GetType() != y.GetType()) return false;
-                return x.WorkingSetPrivate == y.WorkingSetPrivate && x.Managed == y.Managed;
-            }
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return WorkingSetPrivate == other.WorkingSetPrivate && Managed == other.Managed;
+        }
 
-            public int GetHashCode(Memory obj)
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj is Memory && Equals((Memory) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
             {
-                unchecked
-                {
-                    return (obj.WorkingSetPrivate.GetHashCode() * 397) ^ obj.Managed.GetHashCode();
-                }
+                return (WorkingSetPrivate.GetHashCode()*397) ^ Managed.GetHashCode();
             }
         }
 
-        private static readonly IEqualityComparer<Memory> ComparerInstance = new WorkingSetPrivateManagedEqualityComparer();
-
-        public static IEqualityComparer<Memory> Comparer
+        public static bool operator ==(Memory left, Memory right)
         {
-            get { return ComparerInstance; }
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Memory left, Memory right)
+        {
+            return !Equals(left, right);
         }
 
         public Memory(decimal workingSetPrivate, decimal managed)
