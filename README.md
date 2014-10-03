@@ -1,7 +1,9 @@
 Simple.Wpf.Template
 ===================
 
-This is a template for a WPF solution based on an MMVM approach using IoC, logging, and asynchronous invocations. All external thrid party libraries are resolved using NuGet.
+This is a template for a WPF solution based on an MMVM approach using IoC, logging, and asynchronous invocations. All external 
+
+**Thrid party libraries are resolved using NuGet.**
 
 
 The idea is to prevent me from re-creating the scaffolding\infrastructure for any future WPF apps, the following are included:
