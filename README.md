@@ -6,20 +6,20 @@ This is a template for a WPF solution based on an MMVM approach using IoC, loggi
 
 The idea is to prevent me from re-creating the scaffolding\infrastructure for a WPF application, the following are included:
 
-&nbsp;&nbsp;&nbsp;MVVM - implmented as ViewModel first approach using strongly typed XAML DataTemplates,
+**MVVM** - _implmented as ViewModel first approach using strongly typed XAML DataTemplates,_
 
-&nbsp;&nbsp;&nbsp;IoC - implmented using Autofac, all services and key (major) ViewModels are resolved via the IoC container,
+**IoC** - _implmented using Autofac, all services and key (major) ViewModels are resolved via the IoC container,_
 
-&nbsp;&nbsp;&nbsp;Logging - implemented using NLog, writes to file currently in the 'C:\temp' directory,
+**Logging** - _implemented using NLog, writes to file currently in the 'C:\temp' directory,_
 
-&nbsp;&nbsp;&nbsp;Async support - implemented using Reactive Extensions,
+**Async Support** - _implemented using Reactive Extensions,_
 
-&nbsp;&nbsp;&nbsp;Heartbeat - produces a regular heart beat for the application (currently writes to the log),
+**Heartbeat** - _produces a regular heart beat for the application (currently writes to the log),_
 
-&nbsp;&nbsp;&nbsp;Idling - a service producing notifications when the dispatcher enters idle state,
+**Idling** - _a service producing notifications when the dispatcher enters idle state,_
 
-&nbsp;&nbsp;&nbsp;Diagnostics - a service exposing the CPU and memory (managed &amp; unmanaged) consumptions,
+**Diagnostics** - _a service exposing the CPU and memory (managed &amp; unmanaged) consumptions,_
 
-&nbsp;&nbsp;&nbsp;Duration - a service for measuring the time for a block of code (Debug mode only),
+**Duration** - _a service for measuring the time for a block of code (Debug mode only),_
 
-&nbsp;&nbsp;&nbsp;Gestures - a service for changing the system gestures (mouse) during the application, designed to be used with MVVM,
+**Gestures** - _a service for changing the system gestures (mouse) during the application, designed to be used with MVVM,_
