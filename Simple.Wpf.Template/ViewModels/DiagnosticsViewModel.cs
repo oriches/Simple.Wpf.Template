@@ -10,10 +10,6 @@ namespace Simple.Wpf.Template.ViewModels
 
     public sealed class DiagnosticsViewModel : BaseViewModel, IDisposable
     {
-        private const string DefaultCpuString = "CPU: 00%";
-        private const string DefaultManagedMemoryString = "Managed Memory: 00 Mb";
-        private const string DefaultTotalMemoryString = "Total Memory: 00 Mb";
-
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly CompositeDisposable _disposable;
@@ -24,23 +20,23 @@ namespace Simple.Wpf.Template.ViewModels
 
         public DiagnosticsViewModel(IDiagnosticsService diagnosticsService, ISchedulerService schedulerService)
         {
-            Cpu = DefaultCpuString;
-            ManagedMemory = DefaultManagedMemoryString;
-            TotalMemory = DefaultTotalMemoryString;
+            Cpu = Constants.DefaultCpuString;
+            ManagedMemory = Constants.DefaultManagedMemoryString;
+            TotalMemory = Constants.DefaultTotalMemoryString;
 
             _disposable = new CompositeDisposable
             {
                 diagnosticsService.CpuUtilisation
                     .Select(x => x < 10
-                        ? string.Format("CPU: 0{0} %", x.ToString(CultureInfo.InvariantCulture))
-                        : string.Format("CPU: {0} %", x.ToString(CultureInfo.InvariantCulture)))
+                        ? string.Format("CPU: 0{0}%", x.ToString(CultureInfo.InvariantCulture))
+                        : string.Format("CPU: {0}%", x.ToString(CultureInfo.InvariantCulture)))
                     .ObserveOn(schedulerService.Dispatcher)
                     .Subscribe(x =>
                     {
                         Cpu = x;
                     }, e =>
                     {
-                        Cpu = DefaultCpuString;
+                        Cpu = Constants.DefaultCpuString;
                     }),
 
                 diagnosticsService.Memory
@@ -58,8 +54,8 @@ namespace Simple.Wpf.Template.ViewModels
                         TotalMemory = x.Item2;
                     }, e =>
                     {
-                        ManagedMemory = DefaultManagedMemoryString;
-                        TotalMemory = DefaultTotalMemoryString;
+                        ManagedMemory = Constants.DefaultManagedMemoryString;
+                        TotalMemory = Constants.DefaultTotalMemoryString;
                     })
             };
         }
