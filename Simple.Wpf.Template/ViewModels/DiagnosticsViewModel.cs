@@ -5,6 +5,7 @@ namespace Simple.Wpf.Template.ViewModels
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using Extensions;
+    using Models;
     using NLog;
     using Services;
 
@@ -19,6 +20,18 @@ namespace Simple.Wpf.Template.ViewModels
         private string _totalMemory;
         private string _fps;
 
+        internal sealed class FormattedMemory
+        {
+            public string ManagedMemory { get; private set; }
+            public string TotalMemory { get; private set; }
+
+            public FormattedMemory(string managedMemory, string totalMemory)
+            {
+                ManagedMemory = managedMemory;
+                TotalMemory = totalMemory;
+            }
+        }
+
         public DiagnosticsViewModel(IDiagnosticsService diagnosticsService, ISchedulerService schedulerService)
         {
             Fps = Constants.DefaultFpsString;
@@ -31,32 +44,24 @@ namespace Simple.Wpf.Template.ViewModels
                 diagnosticsService.Fps
                     .Sample(TimeSpan.FromMilliseconds(50), schedulerService.TaskPool)
                     .DistinctUntilChanged()
-                    .Select(x => string.Format("Render: {0} FPS", x.ToString(CultureInfo.InvariantCulture)))
+                    .Select(FormatFps)
                     .ObserveOn(schedulerService.Dispatcher)
                     .Subscribe(x => { Fps = x; },
                                e => { Fps = Constants.DefaultFpsString; }),
 
                 diagnosticsService.Cpu
-                    .Select(x => x < 10
-                        ? string.Format("CPU: 0{0} %", x.ToString(CultureInfo.InvariantCulture))
-                        : string.Format("CPU: {0} %", x.ToString(CultureInfo.InvariantCulture)))
+                    .Select(FormatCpu)
                     .ObserveOn(schedulerService.Dispatcher)
                     .Subscribe(x => { Cpu = x; },
                                e => { Cpu = Constants.DefaultCpuString; }),
 
                 diagnosticsService.Memory
-                    .Select(x =>
-                    {
-                        var managedMemory = string.Format("Managed Memory: {0}", x.ManagedAsString());
-                        var totalMemory = string.Format("Total Memory: {0}", x.WorkingSetPrivateAsString());
-
-                        return new Tuple<string, string>(managedMemory, totalMemory);
-                    })
+                    .Select(FormatMemory)
                     .ObserveOn(schedulerService.Dispatcher)
                     .Subscribe(x =>
                     {
-                        ManagedMemory = x.Item1;
-                        TotalMemory = x.Item2;
+                        ManagedMemory = x.ManagedMemory;
+                        TotalMemory = x.TotalMemory;
                     }, e =>
                     {
                         ManagedMemory = Constants.DefaultManagedMemoryString;
@@ -64,7 +69,7 @@ namespace Simple.Wpf.Template.ViewModels
                     })
             };
         }
-
+        
         public void Dispose()
         {
             using (Duration.Measure(Logger, "Dispose"))
@@ -122,6 +127,28 @@ namespace Simple.Wpf.Template.ViewModels
             private set
             {
                 SetPropertyAndNotify(ref _totalMemory, value, () => TotalMemory);
+            }
+        }
+
+        private static string FormatFps(int fps)
+        {
+            return string.Format("Render: {0} FPS", fps.ToString(CultureInfo.InvariantCulture));
+        }
+
+        private static string FormatCpu(int cpu)
+        {
+            return cpu < 10
+                ? string.Format("CPU: 0{0} %", cpu.ToString(CultureInfo.InvariantCulture))
+                : string.Format("CPU: {0} %", cpu.ToString(CultureInfo.InvariantCulture));
+        }
+
+        private static FormattedMemory FormatMemory(Memory memory)
+        {
+            {
+                var managedMemory = string.Format("Managed Memory: {0}", memory.ManagedAsString());
+                var totalMemory = string.Format("Total Memory: {0}", memory.WorkingSetPrivateAsString());
+
+                return new FormattedMemory(managedMemory, totalMemory);
             }
         }
     }
