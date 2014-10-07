@@ -1,4 +1,4 @@
-﻿namespace Simple.Wpf.Template.Tests
+namespace Simple.Wpf.Template.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -29,33 +29,15 @@
             _idling = new Subject<Unit>();
             _idleService.Setup(x => x.Idling).Returns(_idling);
         }
-
+        
         [Test]
-        public void intialised_pumps()
-        {
-            // ARRANGE
-            var initialised = false;
-
-            // ACT
-            var service = new DiagnosticsService(_idleService.Object, _schedulerService);
-            service.Initialised
-                .Subscribe(x => { initialised = true; });
-
-            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10));
-
-            // ASSERT
-            Assert.That(initialised, Is.True);
-        }
-
-        [Test]
-        public void cpu_utilisation_pumps_when_idling()
+        public void cpu_pumps_when_idling()
         {
             // ARRANGE
             var values = new List<int>();
 
             var service = new DiagnosticsService(_idleService.Object, _schedulerService);
-            service.CpuUtilisation
-                .Subscribe(values.Add);
+            service.Cpu.Subscribe(values.Add);
 
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10));
 
@@ -80,8 +62,7 @@
             var values = new List<Memory>();
 
             var service = new DiagnosticsService(_idleService.Object, _schedulerService);
-            service.Memory
-                .Subscribe(values.Add);
+            service.Memory.Subscribe(values.Add);
 
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10));
 
@@ -105,11 +86,10 @@
             // ARRANGE
             var called = false;
             var service = new DiagnosticsService(_idleService.Object, _schedulerService);
-            service.CpuUtilisation
-                .Subscribe(x => { called = true; });
             
-            service.Memory
-                .Subscribe(x => { called = true; });
+            service.Fps.Subscribe(x => { called = true; });
+            service.Cpu.Subscribe(x => { called = true; });
+            service.Memory.Subscribe(x => { called = true; });
 
             // ACT
             service.Dispose();
