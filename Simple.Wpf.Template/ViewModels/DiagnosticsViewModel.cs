@@ -17,27 +17,31 @@ namespace Simple.Wpf.Template.ViewModels
         private string _cpu;
         private string _managedMemory;
         private string _totalMemory;
+        private string _fps;
 
         public DiagnosticsViewModel(IDiagnosticsService diagnosticsService, ISchedulerService schedulerService)
         {
+            Fps = Constants.DefaultFpsString;
             Cpu = Constants.DefaultCpuString;
             ManagedMemory = Constants.DefaultManagedMemoryString;
             TotalMemory = Constants.DefaultTotalMemoryString;
 
             _disposable = new CompositeDisposable
             {
-                diagnosticsService.CpuUtilisation
-                    .Select(x => x < 10
-                        ? string.Format("CPU: 0{0}%", x.ToString(CultureInfo.InvariantCulture))
-                        : string.Format("CPU: {0}%", x.ToString(CultureInfo.InvariantCulture)))
+                diagnosticsService.Fps
+                    .Sample(TimeSpan.FromMilliseconds(50), schedulerService.TaskPool)
+                    .Select(x => string.Format("Render: {0} FPS", x.ToString(CultureInfo.InvariantCulture)))
                     .ObserveOn(schedulerService.Dispatcher)
-                    .Subscribe(x =>
-                    {
-                        Cpu = x;
-                    }, e =>
-                    {
-                        Cpu = Constants.DefaultCpuString;
-                    }),
+                    .Subscribe(x => { Fps = x; },
+                               e => { Fps = Constants.DefaultFpsString; }),
+
+                diagnosticsService.Cpu
+                    .Select(x => x < 10
+                        ? string.Format("CPU: 0{0} %", x.ToString(CultureInfo.InvariantCulture))
+                        : string.Format("CPU: {0} %", x.ToString(CultureInfo.InvariantCulture)))
+                    .ObserveOn(schedulerService.Dispatcher)
+                    .Subscribe(x => { Cpu = x; },
+                               e => { Cpu = Constants.DefaultCpuString; }),
 
                 diagnosticsService.Memory
                     .Select(x =>
@@ -65,6 +69,19 @@ namespace Simple.Wpf.Template.ViewModels
             using (Duration.Measure(Logger, "Dispose"))
             {
                 _disposable.Dispose();
+            }
+        }
+
+        public string Fps
+        {
+            get
+            {
+                return _fps;
+            }
+
+            private set
+            {
+                SetPropertyAndNotify(ref _fps, value, () => Fps);
             }
         }
 
