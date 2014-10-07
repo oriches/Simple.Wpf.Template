@@ -41,10 +41,6 @@ namespace Simple.Wpf.Template
 
             window.Closed += (s, a) =>
             {
-                // Performance counters can make a process hang when exiting if they haven't finished
-                // initialising, put in this hack to make sure they've initialised.
-                BootStrapper.Resolve<IDiagnosticsService>().Initialised.Wait();
-
                 _disposable.Dispose();
                 BootStrapper.Stop();
             };
