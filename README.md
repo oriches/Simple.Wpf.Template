@@ -20,7 +20,7 @@ The idea is to prevent me from re-creating the scaffolding\infrastructure for an
 
 **Idling** - _a service producing notifications when the dispatcher enters idle state,_
 
-**Diagnostics** - _a service exposing the CPU and memory (managed &amp; unmanaged) consumptions,_
+**Diagnostics** - _a service exposing the FPS, CPU and memory (managed &amp; unmanaged) consumptions,_
 
 **Duration** - _a service for measuring the time for a block of code (Debug mode only),_
 
