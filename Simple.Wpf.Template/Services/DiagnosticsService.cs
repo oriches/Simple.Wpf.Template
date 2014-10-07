@@ -1,13 +1,14 @@
 namespace Simple.Wpf.Template.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
-    using System.Reactive;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
+    using System.Windows.Media;
     using Models;
     using NLog;
 
@@ -16,10 +17,15 @@ namespace Simple.Wpf.Template.Services
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly ISchedulerService _schedulerService;
-        private readonly IDisposable _disposable;
-        private readonly IConnectableObservable<Counters> _bufferedInactiveObservable;
-        private readonly ReplaySubject<Unit> _initialised;
-        
+        private readonly CompositeDisposable _disposable;
+        private readonly IConnectableObservable<Counters> _countersObservable;
+        private readonly IConnectableObservable<int> _fpsObservable;
+        private readonly Queue<long> _fpsQueue;
+        private readonly object _sync;
+
+        private bool _fpsConnected;
+        private bool _countersConnected;
+
         internal sealed class Counters
         {
             public Counters(PerformanceCounter workingSetCounter, PerformanceCounter cpuCounter)
@@ -37,10 +43,11 @@ namespace Simple.Wpf.Template.Services
         {
             _schedulerService = schedulerService;
 
-            _initialised = new ReplaySubject<Unit>(1);
             _disposable = new CompositeDisposable();
 
-            _bufferedInactiveObservable = Observable.Create<Counters>(x =>
+            _sync = new object();
+
+            _countersObservable = Observable.Create<Counters>(x =>
             {
                 var disposable = new CompositeDisposable();
 
@@ -88,11 +95,6 @@ namespace Simple.Wpf.Template.Services
                 {
                     LogFailToCreatePerformanceCounter(x, exn);
                 }
-                finally
-                {
-                    _initialised.OnNext(Unit.Default);
-                    _initialised.OnCompleted();
-                }
 
                 return disposable;
             })
@@ -102,7 +104,12 @@ namespace Simple.Wpf.Template.Services
                 .CombineLatest(idleService.Idling.Buffer(Constants.DiagnosticsIdleBuffer, schedulerService.TaskPool).Where(x => x.Any()), (x, y) => x)
                 .Replay(1);
 
-            _disposable = _bufferedInactiveObservable.Connect();
+            _fpsQueue = new Queue<long>();
+            _fpsObservable = Observable.FromEventPattern<EventHandler, EventArgs>(h => CompositionTarget.Rendering += h,
+                    h => CompositionTarget.Rendering -= h)
+                    .Synchronize()
+                    .Select(x => CalculateFps())
+                    .Publish();
         }
 
         public void Dispose()
@@ -113,28 +120,40 @@ namespace Simple.Wpf.Template.Services
             }
         }
 
-        public IObservable<Unit> Initialised { get { return _initialised; } }
-
         public IObservable<Memory> Memory
         {
             get
             {
-                return _bufferedInactiveObservable.Select(CalculateMemoryValues)
+                ConnectCountersObservable();
+
+                return _countersObservable.Select(CalculateMemoryValues)
                     .DistinctUntilChanged();
             }
         }
 
-        public IObservable<int> CpuUtilisation
+        public IObservable<int> Cpu
         {
             get
             {
-                return _bufferedInactiveObservable.Select(CalculateCpu)
+                ConnectCountersObservable();
+
+                return _countersObservable.Select(CalculateCpu)
                     .Delay(Constants.DiagnosticsCpuBuffer, _schedulerService.TaskPool)
                     .DistinctUntilChanged()
                     .Select(DivideByNumberOfProcessors);
             }
         }
 
+        public IObservable<int> Fps
+        {
+            get
+            {
+                ConnectFpsObservable();
+                
+                return _fpsObservable.DistinctUntilChanged();
+            }
+        }
+        
         private static void LogFailToCreatePerformanceCounter(IObserver<Counters> counters, Exception exception)
         {
             Logger.Error("Failed to create performance counters!");
@@ -273,6 +292,74 @@ namespace Simple.Wpf.Template.Services
             }
 
             throw new ArgumentException(@"Could not find performance counter instance name for current process, name '{0}'", currentProcess.ProcessName);
+        }
+
+        private void ConnectCountersObservable()
+        {
+            if (_countersConnected)
+            {
+                return;
+            }
+
+            lock (_sync)
+            {
+                if (_countersConnected)
+                {
+                    return;
+                }
+
+                var disposable = _countersObservable.Connect();
+                _disposable.Add(disposable);
+
+                _countersConnected = true;
+            }
+        }
+
+        private void ConnectFpsObservable()
+        {
+            if (_fpsConnected)
+            {
+                return;
+            }
+
+            lock (_sync)
+            {
+                if (_fpsConnected)
+                {
+                    return;
+                }
+
+                var disposable = _fpsObservable.Connect();
+                _disposable.Add(Disposable.Create(() =>
+                {
+                    disposable.Dispose();
+                    _fpsQueue.Clear();
+                }));
+
+                _fpsConnected = true;
+            }
+        }
+
+        private int CalculateFps()
+        {
+            var now = DateTime.Now;
+            var endTime = now.Ticks;
+            var startTime = now.AddSeconds(-1).Ticks;
+
+            while (_fpsQueue.Any())
+            {
+                if (_fpsQueue.Peek() < startTime)
+                {
+                    _fpsQueue.Dequeue();
+
+                    continue;
+                }
+                
+                break;
+            }
+
+            _fpsQueue.Enqueue(endTime);
+            return _fpsQueue.Count;
         }
     }
 }
