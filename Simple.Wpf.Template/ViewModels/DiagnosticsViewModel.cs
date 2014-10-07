@@ -30,6 +30,7 @@ namespace Simple.Wpf.Template.ViewModels
             {
                 diagnosticsService.Fps
                     .Sample(TimeSpan.FromMilliseconds(50), schedulerService.TaskPool)
+                    .DistinctUntilChanged()
                     .Select(x => string.Format("Render: {0} FPS", x.ToString(CultureInfo.InvariantCulture)))
                     .ObserveOn(schedulerService.Dispatcher)
                     .Subscribe(x => { Fps = x; },
