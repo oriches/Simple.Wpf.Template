@@ -144,12 +144,10 @@ namespace Simple.Wpf.Template.ViewModels
 
         private static FormattedMemory FormatMemory(Memory memory)
         {
-            {
-                var managedMemory = string.Format("Managed Memory: {0}", memory.ManagedAsString());
-                var totalMemory = string.Format("Total Memory: {0}", memory.WorkingSetPrivateAsString());
+            var managedMemory = string.Format("Managed Memory: {0}", memory.ManagedAsString());
+            var totalMemory = string.Format("Total Memory: {0}", memory.WorkingSetPrivateAsString());
 
-                return new FormattedMemory(managedMemory, totalMemory);
-            }
+            return new FormattedMemory(managedMemory, totalMemory);
         }
     }
 }
