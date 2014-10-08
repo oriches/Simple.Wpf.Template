@@ -25,12 +25,15 @@
 
             <TextBlock Grid.Column="0"
                        Grid.Row="0"
+                       HorizontalAlignment="Center"
                        Text="{Binding Path=Title, Mode=OneTime}" />
 
             <Button Grid.Column="0"
                     Grid.Row="1"
                     Content="Delay"
                     Height="24"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Center"
                     Command="{Binding Path=DelayCommand, Mode=OneWay}" />
             
 
