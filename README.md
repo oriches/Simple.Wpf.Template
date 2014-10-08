@@ -1,7 +1,7 @@
 Simple.Wpf.Template
 ===================
 
-This is a template for a WPF solution based on an MMVM approach using IoC, logging, and asynchronous invocations. All external 
+This is 'my' canonical example for a WPF solution based on an MMVM approach using IoC, logging, and asynchronous invocations. All external 
 
 **Thrid party libraries are resolved using NuGet.**
 
