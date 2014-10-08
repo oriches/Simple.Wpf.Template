@@ -4,13 +4,13 @@ namespace Simple.Wpf.Template
 
     public static class Constants
     {
-        public static readonly TimeSpan Heartbeat = TimeSpan.FromSeconds(60);
+        public static readonly TimeSpan Heartbeat = TimeSpan.FromMinutes(1);
         public static readonly TimeSpan UiFreeze = TimeSpan.FromMilliseconds(500);
         public static readonly TimeSpan UiFreezeTimer = TimeSpan.FromMilliseconds(333);
 
         public static readonly TimeSpan DiagnosticsIdleBuffer = TimeSpan.FromMilliseconds(666);
         public static readonly TimeSpan DiagnosticsCpuBuffer = TimeSpan.FromMilliseconds(666);
-        public static readonly TimeSpan DiagnosticsSubscriptionDelay = TimeSpan.FromMilliseconds(7500);
+        public static readonly TimeSpan DiagnosticsSubscriptionDelay = TimeSpan.FromMilliseconds(1000);
 
         public const string DefaultFpsString = "Render: 00 FPS";
         public const string DefaultCpuString = "CPU: 00 %";
