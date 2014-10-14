@@ -6,6 +6,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
 
+                <ResourceDictionary Source="Views/Converters.xaml" />
+                
                 <ResourceDictionary Source="Views/Templates.xaml" />
                 
             </ResourceDictionary.MergedDictionaries>
