@@ -5,6 +5,7 @@ namespace Simple.Wpf.Template
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Windows;
+    using System.Windows.Media;
     using System.Windows.Threading;
     using Extensions;
     using Models;
@@ -29,7 +30,10 @@ namespace Simple.Wpf.Template
         protected override void OnStartup(StartupEventArgs e)
         {
             Logger.Info("Starting");
-            Logger.Info("Dispatcher managed thread identifier - {0}", System.Threading.Thread.CurrentThread.ManagedThreadId);
+            Logger.Info("Dispatcher managed thread identifier = {0}", System.Threading.Thread.CurrentThread.ManagedThreadId);
+
+            Logger.Info("WPF rendering capability (tier) = {0}", RenderCapability.Tier / 0x10000);
+            RenderCapability.TierChanged += (sender, args) => Logger.Info("WPF rendering capability (tier) = {0}", RenderCapability.Tier / 0x10000);
 
             base.OnStartup(e);
 
