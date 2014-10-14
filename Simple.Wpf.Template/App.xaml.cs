@@ -33,7 +33,7 @@ namespace Simple.Wpf.Template
             Logger.Info("Dispatcher managed thread identifier = {0}", System.Threading.Thread.CurrentThread.ManagedThreadId);
 
             Logger.Info("WPF rendering capability (tier) = {0}", RenderCapability.Tier / 0x10000);
-            RenderCapability.TierChanged += (sender, args) => Logger.Info("WPF rendering capability (tier) = {0}", RenderCapability.Tier / 0x10000);
+            RenderCapability.TierChanged += (s, a) => Logger.Info("WPF rendering capability (tier) = {0}", RenderCapability.Tier / 0x10000);
 
             base.OnStartup(e);
 
