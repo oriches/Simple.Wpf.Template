@@ -1,7 +1,10 @@
 namespace Simple.Wpf.Template.ViewModels
 {
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Globalization;
+    using System.Linq;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using Extensions;
@@ -14,12 +17,13 @@ namespace Simple.Wpf.Template.ViewModels
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly CompositeDisposable _disposable;
+        private readonly ObservableCollection<string> _log;
 
         private string _cpu;
         private string _managedMemory;
         private string _totalMemory;
         private string _fps;
-
+        
         internal sealed class FormattedMemory
         {
             public string ManagedMemory { get; private set; }
@@ -34,15 +38,27 @@ namespace Simple.Wpf.Template.ViewModels
 
         public DiagnosticsViewModel(IDiagnosticsService diagnosticsService, ISchedulerService schedulerService)
         {
+            
+            Id = string.Format("Identifier: {0}", Guid.NewGuid());
+
             Fps = Constants.DefaultFpsString;
             Cpu = Constants.DefaultCpuString;
             ManagedMemory = Constants.DefaultManagedMemoryString;
             TotalMemory = Constants.DefaultTotalMemoryString;
 
+            _log = new ObservableCollection<string>();
+            
+            var target = (LimitedMemoryTarget) LogManager.Configuration.FindTargetByName("memory");
             _disposable = new CompositeDisposable
             {
+                Observable.Interval(Constants.DiagnosticsLogInterval, schedulerService.TaskPool)
+                    .Synchronize()
+                    .Select(x => target.Logs.Except(_log).ToArray())
+                    .Where(x => x.Any())
+                    .ObserveOn(schedulerService.Dispatcher)
+                    .Subscribe(x => _log.AddRange(x)),
+
                 diagnosticsService.Fps
-                    .Sample(TimeSpan.FromMilliseconds(50), schedulerService.TaskPool)
                     .DistinctUntilChanged()
                     .Select(FormatFps)
                     .ObserveOn(schedulerService.Dispatcher)
@@ -77,6 +93,10 @@ namespace Simple.Wpf.Template.ViewModels
                 _disposable.Dispose();
             }
         }
+
+        public string Id { get; private set; }
+
+        public IEnumerable<string> Log { get { return _log; } }
 
         public string Fps
         {
@@ -132,7 +152,7 @@ namespace Simple.Wpf.Template.ViewModels
 
         private static string FormatFps(int fps)
         {
-            return string.Format("Render: {0} FPS", fps.ToString(CultureInfo.InvariantCulture));
+            return "Render: " + fps.ToString(CultureInfo.InvariantCulture) + " FPS";
         }
 
         private static string FormatCpu(int cpu)

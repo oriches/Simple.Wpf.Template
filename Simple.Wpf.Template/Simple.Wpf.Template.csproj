@@ -100,6 +100,7 @@
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Extensions\UnitExtensions.cs" />
     <Compile Include="Heartbeat.cs" />
+    <Compile Include="LimitedMemoryTarget.cs" />
     <Compile Include="Models\MemoryUnits.cs" />
     <Compile Include="NLogFormattedThreadIdLayoutRenderer.cs" />
     <Compile Include="Services\DiagnosticsService.cs" />
@@ -109,10 +110,8 @@
     <Compile Include="Services\IdleService.cs" />
     <Compile Include="Services\IGestureService.cs" />
     <Compile Include="Services\IIdleService.cs" />
-    <Compile Include="Commands\IObservableCommand.cs" />
     <Compile Include="Services\ISchedulerService.cs" />
     <Compile Include="Models\Memory.cs" />
-    <Compile Include="Commands\ObservableCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Services\SchedulerService.cs" />
     <Compile Include="ViewModels\DiagnosticsViewModel.cs" />

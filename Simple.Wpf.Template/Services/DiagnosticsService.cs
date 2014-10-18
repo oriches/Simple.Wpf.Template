@@ -107,6 +107,7 @@ namespace Simple.Wpf.Template.Services
             _fpsQueue = new Queue<long>();
             _fpsObservable = Observable.FromEventPattern<EventHandler, EventArgs>(h => CompositionTarget.Rendering += h,
                     h => CompositionTarget.Rendering -= h)
+                    .ObserveOn(schedulerService.TaskPool)
                     .Synchronize()
                     .Select(x => CalculateFps())
                     .Publish();

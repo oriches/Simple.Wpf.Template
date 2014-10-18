@@ -1,12 +1,15 @@
 namespace Simple.Wpf.Template.Tests
 {
     using System;
+    using System.Linq;
     using System.Reactive.Subjects;
     using Microsoft.Reactive.Testing;
     using Models;
     using Moq;
+    using NLog;
     using NUnit.Framework;
     using Services;
+    using Template;
     using ViewModels;
 
     [TestFixture]
@@ -25,7 +28,7 @@ namespace Simple.Wpf.Template.Tests
             _testScheduler = new TestScheduler();
             _schedulerService = new MockSchedulerService(_testScheduler);
 
-            _diagnosticService = new Mock<IDiagnosticsService>(MockBehavior.Strict);
+            _diagnosticService = new Mock<IDiagnosticsService>();
 
             _fpsSubject = new Subject<int>();
             _diagnosticService.Setup(x => x.Fps).Returns(_fpsSubject);
@@ -35,6 +38,31 @@ namespace Simple.Wpf.Template.Tests
 
             _memorySubject = new Subject<Memory>();
             _diagnosticService.Setup(x => x.Memory).Returns(_memorySubject);
+        }
+
+        [Test]
+        public void exposes_log_messages()
+        {
+            // ARRANGE
+            TestHelper.ReconfigureLoggerToLevel(LogLevel.Error);
+            var logger = LogManager.GetCurrentClassLogger();
+            
+            var message1 = string.Format("Message 1 - {0}", Guid.NewGuid());
+            var message2 = string.Format("Message 2 - {0}", Guid.NewGuid());
+
+            var viewModel = new DiagnosticsViewModel(_diagnosticService.Object, _schedulerService);
+
+            logger.Error(message1);
+            logger.Error(message2);
+
+            _testScheduler.AdvanceBy(Constants.DiagnosticsLogInterval + Constants.DiagnosticsLogInterval);
+
+            //ACT
+            var log = viewModel.Log.ToArray();
+
+            //ASSERT
+            Assert.That(log.Count(x => x.Contains(message1)) == 1, Is.True);
+            Assert.That(log.Count(x => x.Contains(message2)) == 1, Is.True);
         }
 
         [Test]
