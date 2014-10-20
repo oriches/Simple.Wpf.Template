@@ -3,6 +3,7 @@ namespace Simple.Wpf.Template.Tests
     using System;
     using System.Linq;
     using System.Reactive.Subjects;
+    using Helpers;
     using Microsoft.Reactive.Testing;
     using Models;
     using Moq;
@@ -44,7 +45,7 @@ namespace Simple.Wpf.Template.Tests
         public void exposes_log_messages()
         {
             // ARRANGE
-            TestHelper.ReconfigureLoggerToLevel(LogLevel.Error);
+            LogHelper.ReconfigureLoggerToLevel(LogLevel.Error);
             var logger = LogManager.GetCurrentClassLogger();
             
             var message1 = string.Format("Message 1 - {0}", Guid.NewGuid());
