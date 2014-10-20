@@ -1,8 +1,9 @@
-﻿namespace Simple.Wpf.Template.Tests
+namespace Simple.Wpf.Template.Tests
 {
     using System;
     using System.Linq;
     using System.Threading;
+    using Helpers;
     using NLog;
     using NUnit.Framework;
     using Template;
@@ -34,7 +35,7 @@
         public void logs_duration_when_debug_level_is_enabled()
         {
             // ARRANGE
-            TestHelper.ReconfigureLoggerToLevel(LogLevel.Debug);
+            LogHelper.ReconfigureLoggerToLevel(LogLevel.Debug);
             var logger = LogManager.GetCurrentClassLogger();
             var memoryTarget = (LimitedMemoryTarget)LogManager.Configuration.FindTargetByName("memory");
             
@@ -56,7 +57,7 @@
         public void does_not_log_duration_when_debug_log_level_is_disabled()
         {
             // ARRANGE
-            TestHelper.ReconfigureLoggerToLevel(LogLevel.Info);
+            LogHelper.ReconfigureLoggerToLevel(LogLevel.Info);
             var logger = LogManager.GetCurrentClassLogger();
             var memoryTarget = (LimitedMemoryTarget)LogManager.Configuration.FindTargetByName("memory");
 
