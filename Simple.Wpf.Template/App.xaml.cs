@@ -8,6 +8,7 @@ namespace Simple.Wpf.Template
     using System.Windows.Media;
     using System.Windows.Threading;
     using Extensions;
+    using Helpers;
     using Models;
     using NLog;
     using Services;
@@ -22,7 +23,7 @@ namespace Simple.Wpf.Template
         public App()
         {
 #if DEBUG
-            LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration("NLog.Debug.config");
+            LogHelper.ReconfigureLoggerToLevel(LogLevel.Debug);
 #endif
             _disposable = new CompositeDisposable();
         }
