@@ -59,7 +59,6 @@ namespace Simple.Wpf.Template.ViewModels
                     .Subscribe(x => _log.AddRange(x)),
 
                 diagnosticsService.Fps
-                    .DistinctUntilChanged()
                     .Select(FormatFps)
                     .ObserveOn(schedulerService.Dispatcher)
                     .Subscribe(x => { Fps = x; },
