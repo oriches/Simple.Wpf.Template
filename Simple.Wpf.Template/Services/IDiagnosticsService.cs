@@ -5,6 +5,8 @@ namespace Simple.Wpf.Template.Services
 
     public interface IDiagnosticsService
     {
+        IObservable<string> Log { get; }
+            
         IObservable<Memory> Memory { get; }
 
         IObservable<int> Cpu { get; }
