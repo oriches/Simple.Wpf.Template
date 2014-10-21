@@ -2,12 +2,15 @@ namespace Simple.Wpf.Template.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reactive;
     using System.Reactive.Subjects;
+    using Helpers;
     using Microsoft.Reactive.Testing;
-    using Moq;
-    using NUnit.Framework;
     using Models;
+    using Moq;
+    using NLog;
+    using NUnit.Framework;
     using Services;
 
     [TestFixture]
@@ -24,7 +27,7 @@ namespace Simple.Wpf.Template.Tests
             _testScheduler = new TestScheduler();
             _schedulerService = new MockSchedulerService(_testScheduler);
             
-            _idleService = new Mock<IIdleService>(MockBehavior.Strict);
+            _idleService = new Mock<IIdleService>();
             
             _idling = new Subject<Unit>();
             _idleService.Setup(x => x.Idling).Returns(_idling);
@@ -78,6 +81,32 @@ namespace Simple.Wpf.Template.Tests
             // ASSERT
             Assert.That(values, Is.Not.Empty);
             Assert.That(values.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void log_pumps_when_nlog_is_used()
+        {
+            // ARRANGE
+            LogHelper.ReconfigureLoggerToLevel(LogLevel.Error);
+            var logger = LogManager.GetCurrentClassLogger();
+
+            var message1 = string.Format("Message 1 - {0}", Guid.NewGuid());
+            var message2 = string.Format("Message 2 - {0}", Guid.NewGuid());
+
+            var logValues = new List<string>();
+
+            var service = new DiagnosticsService(_idleService.Object, _schedulerService);
+            service.Log.Subscribe(logValues.Add);
+
+            //ACT
+            logger.Error(message1);
+            logger.Error(message2);
+
+            _testScheduler.AdvanceBy(Constants.DiagnosticsLogInterval + Constants.DiagnosticsLogInterval);
+
+            //ASSERT
+            Assert.That(logValues.Count(x => x.Contains(message1)) == 1, Is.True);
+            Assert.That(logValues.Count(x => x.Contains(message2)) == 1, Is.True);
         }
         
         [Test]
