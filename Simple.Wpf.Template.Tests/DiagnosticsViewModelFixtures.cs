@@ -22,6 +22,7 @@ namespace Simple.Wpf.Template.Tests
         private Subject<int> _cpuSubject;
         private Subject<Memory> _memorySubject;
         private Subject<int> _fpsSubject;
+        private Subject<string> _logSubject;
 
         [SetUp]
         public void SetUp()
@@ -39,6 +40,9 @@ namespace Simple.Wpf.Template.Tests
 
             _memorySubject = new Subject<Memory>();
             _diagnosticService.Setup(x => x.Memory).Returns(_memorySubject);
+
+            _logSubject = new Subject<string>();
+            _diagnosticService.Setup(x => x.Log).Returns(_logSubject);
         }
 
         [Test]
@@ -53,8 +57,8 @@ namespace Simple.Wpf.Template.Tests
 
             var viewModel = new DiagnosticsViewModel(_diagnosticService.Object, _schedulerService);
 
-            logger.Error(message1);
-            logger.Error(message2);
+            _logSubject.OnNext(message1);
+            _logSubject.OnNext(message2);
 
             _testScheduler.AdvanceBy(Constants.DiagnosticsLogInterval + Constants.DiagnosticsLogInterval);
 
@@ -65,7 +69,22 @@ namespace Simple.Wpf.Template.Tests
             Assert.That(log.Count(x => x.Contains(message1)) == 1, Is.True);
             Assert.That(log.Count(x => x.Contains(message2)) == 1, Is.True);
         }
+        
+        [Test]
+        public void log_is_empty_when_diagnostics_service_log_errors()
+        {
+            // ARRANGE
+            var viewModel = new DiagnosticsViewModel(_diagnosticService.Object, _schedulerService);
 
+            // ACT
+            _logSubject.OnError(new Exception("blah!"));
+
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(1));
+
+            // ASSERT
+            Assert.That(viewModel.Log, Is.Empty);
+        }
+        
         [Test]
         public void when_created_fps_is_default_value()
         {
@@ -235,7 +254,7 @@ namespace Simple.Wpf.Template.Tests
             // ASSERT
             Assert.That(viewModel.ManagedMemory, Is.EqualTo(Constants.DefaultManagedMemoryString));
         }
-
+        
         [Test]
         public void disposing_unsubscribes_diagnostics_service_stream()
         {
