@@ -38,7 +38,6 @@ namespace Simple.Wpf.Template.ViewModels
 
         public DiagnosticsViewModel(IDiagnosticsService diagnosticsService, ISchedulerService schedulerService)
         {
-            
             Id = string.Format("Identifier: {0}", Guid.NewGuid());
 
             Fps = Constants.DefaultFpsString;
@@ -56,19 +55,32 @@ namespace Simple.Wpf.Template.ViewModels
                     .Select(x => target.Logs.Except(_log).ToArray())
                     .Where(x => x.Any())
                     .ObserveOn(schedulerService.Dispatcher)
-                    .Subscribe(x => _log.AddRange(x)),
+                    .Subscribe(x => _log.AddRange(x),
+                        e =>
+                        {
+                            Logger.Error(e);
+                            _log.Clear();
+                        }),
 
                 diagnosticsService.Fps
                     .Select(FormatFps)
                     .ObserveOn(schedulerService.Dispatcher)
                     .Subscribe(x => { Fps = x; },
-                               e => { Fps = Constants.DefaultFpsString; }),
+                        e =>
+                        {
+                            Logger.Error(e);
+                            Fps = Constants.DefaultFpsString;
+                        }),
 
                 diagnosticsService.Cpu
                     .Select(FormatCpu)
                     .ObserveOn(schedulerService.Dispatcher)
                     .Subscribe(x => { Cpu = x; },
-                               e => { Cpu = Constants.DefaultCpuString; }),
+                        e =>
+                        {
+                            Logger.Error(e);
+                            Cpu = Constants.DefaultCpuString;
+                        }),
 
                 diagnosticsService.Memory
                     .Select(FormatMemory)
@@ -79,6 +91,7 @@ namespace Simple.Wpf.Template.ViewModels
                         TotalMemory = x.TotalMemory;
                     }, e =>
                     {
+                        Logger.Error(e);
                         ManagedMemory = Constants.DefaultManagedMemoryString;
                         TotalMemory = Constants.DefaultTotalMemoryString;
                     })
