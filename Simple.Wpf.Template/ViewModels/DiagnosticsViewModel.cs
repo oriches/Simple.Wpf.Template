@@ -3,7 +3,6 @@ namespace Simple.Wpf.Template.ViewModels
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using Collections;
@@ -47,15 +46,11 @@ namespace Simple.Wpf.Template.ViewModels
 
             _log = new RangeObservableCollection<string>();
             
-            var target = (LimitedMemoryTarget) LogManager.Configuration.FindTargetByName("memory");
             _disposable = new CompositeDisposable
             {
-                Observable.Interval(Constants.DiagnosticsLogInterval, schedulerService.TaskPool)
-                    .Synchronize()
-                    .Select(x => target.Logs.Except(_log).ToArray())
-                    .Where(x => x.Any())
+                diagnosticsService.Log
                     .ObserveOn(schedulerService.Dispatcher)
-                    .Subscribe(x => _log.AddRange(x),
+                    .Subscribe(x => _log.Add(x),
                         e =>
                         {
                             Logger.Error(e);
@@ -65,7 +60,7 @@ namespace Simple.Wpf.Template.ViewModels
                 diagnosticsService.Fps
                     .Select(FormatFps)
                     .ObserveOn(schedulerService.Dispatcher)
-                    .Subscribe(x => { Fps = x; },
+                    .Subscribe(x => Fps = x,
                         e =>
                         {
                             Logger.Error(e);
@@ -75,7 +70,7 @@ namespace Simple.Wpf.Template.ViewModels
                 diagnosticsService.Cpu
                     .Select(FormatCpu)
                     .ObserveOn(schedulerService.Dispatcher)
-                    .Subscribe(x => { Cpu = x; },
+                    .Subscribe(x => Cpu = x,
                         e =>
                         {
                             Logger.Error(e);
