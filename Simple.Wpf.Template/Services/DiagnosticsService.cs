@@ -22,10 +22,11 @@ namespace Simple.Wpf.Template.Services
         private readonly IConnectableObservable<int> _fpsObservable;
         private readonly Queue<long> _fpsQueue;
         private readonly object _sync;
+        private readonly LimitedMemoryTarget _loggingTarget;
 
         private bool _fpsConnected;
         private bool _countersConnected;
-
+        
         internal sealed class Counters
         {
             public Counters(PerformanceCounter workingSetCounter, PerformanceCounter cpuCounter)
@@ -107,10 +108,11 @@ namespace Simple.Wpf.Template.Services
             _fpsQueue = new Queue<long>();
             _fpsObservable = Observable.FromEventPattern<EventHandler, EventArgs>(h => CompositionTarget.Rendering += h,
                     h => CompositionTarget.Rendering -= h)
-                    .ObserveOn(schedulerService.TaskPool)
                     .Synchronize()
                     .Select(x => CalculateFps())
                     .Publish();
+
+            _loggingTarget = (LimitedMemoryTarget)LogManager.Configuration.FindTargetByName("memory");
         }
 
         public void Dispose()
@@ -121,6 +123,14 @@ namespace Simple.Wpf.Template.Services
             }
         }
 
+        public IObservable<string> Log
+        {
+            get
+            {
+                return StartLogObservable();
+            }
+        }
+        
         public IObservable<Memory> Memory
         {
             get
@@ -339,6 +349,23 @@ namespace Simple.Wpf.Template.Services
 
                 _fpsConnected = true;
             }
+        }
+
+        private IObservable<string> StartLogObservable()
+        {
+            var existingLog = Enumerable.Empty<string>();
+            return Observable.Interval(Constants.DiagnosticsLogInterval, _schedulerService.TaskPool)
+                .Synchronize()
+                .Select(x =>
+                {
+                    var currentLog = _loggingTarget.Logs.ToArray();
+                    var delta = currentLog.Except(existingLog).ToArray();
+                    existingLog = currentLog;
+
+                    return delta;
+                })
+                .Where(x => x.Any())
+                .SelectMany(x => x);
         }
 
         private int CalculateFps()
