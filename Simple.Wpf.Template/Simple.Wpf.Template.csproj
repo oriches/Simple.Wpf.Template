@@ -4,17 +4,20 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7F37C3C0-31CF-45A4-AD11-0B2B661240D3}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{3C3ED4EA-DC15-4286-B023-4951DFDDCB35}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Simple.Wpf.Template.Tests</RootNamespace>
-    <AssemblyName>Simple.Wpf.Template.Tests</AssemblyName>
+    <RootNamespace>Simple.Wpf.Template</RootNamespace>
+    <AssemblyName>Simple.Wpf.Template</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +27,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,66 +36,145 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Reactive.Testing">
-      <HintPath>..\packages\Rx-Testing.2.2.5\lib\net40\Microsoft.Reactive.Testing.dll</HintPath>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
+    <Reference Include="Microsoft.Expression.Interactions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Blend.Interactivity.Wpf.1.0.1340.0\lib\net\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
-    <Reference Include="NLog">
+    <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NLog.3.1.0.0\lib\net40\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore" />
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Reactive.Core">
+    <Reference Include="System.Data" />
+    <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx-Core.2.2.5\lib\net40\System.Reactive.Core.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Interfaces">
+    <Reference Include="System.Reactive.Interfaces, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\net40\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Linq">
+    <Reference Include="System.Reactive.Linq, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx-Linq.2.2.5\lib\net40\System.Reactive.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.PlatformServices">
+    <Reference Include="System.Reactive.PlatformServices, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net40\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="System.Reactive.Windows.Threading, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Xaml.2.2.5\lib\net40\System.Reactive.Windows.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Blend.Interactivity.Wpf.1.0.1340.0\lib\net\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Child2ViewModelFixtures.cs" />
-    <Compile Include="DiagnosticsServiceFixtures.cs" />
-    <Compile Include="DiagnosticsViewModelFixtures.cs" />
-    <Compile Include="DurationFixtures.cs" />
-    <Compile Include="HeartbeatFixtures.cs" />
-    <Compile Include="MockSchedulerService.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestHelper.cs" />
-    <Compile Include="TestSchedulerExtensions.cs" />
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Collections\RangeObservableCollection.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Extensions\AddRangeExtensions.cs" />
+    <Compile Include="Extensions\ForEachExtensions.cs" />
+    <Compile Include="Extensions\MemoryExtensions.cs" />
+    <Compile Include="Extensions\NotifyCollectionChangedExtensions.cs" />
+    <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
+    <Compile Include="Extensions\ToObservableCollectionExtensions.cs" />
+    <Compile Include="Extensions\UnitExtensions.cs" />
+    <Compile Include="Heartbeat.cs" />
+    <Compile Include="Helpers\LogHelper.cs" />
+    <Compile Include="LimitedMemoryTarget.cs" />
+    <Compile Include="Models\MemoryUnits.cs" />
+    <Compile Include="NLogFormattedThreadIdLayoutRenderer.cs" />
+    <Compile Include="Services\DiagnosticsService.cs" />
+    <Compile Include="Duration.cs" />
+    <Compile Include="Services\GesturesService.cs" />
+    <Compile Include="Services\IDiagnosticsService.cs" />
+    <Compile Include="Services\IdleService.cs" />
+    <Compile Include="Services\IGestureService.cs" />
+    <Compile Include="Services\IIdleService.cs" />
+    <Compile Include="Services\ISchedulerService.cs" />
+    <Compile Include="Models\Memory.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Services\SchedulerService.cs" />
+    <Compile Include="ViewModels\DiagnosticsViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Page Include="Views\Converters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="BootStrapper.cs" />
+    <Compile Include="ViewModels\Child1ViewModel.cs" />
+    <Compile Include="ViewModels\Child2ViewModel.cs" />
+    <Compile Include="Helpers\ExpressionHelper.cs" />
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Views\Templates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="app.config" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Simple.Wpf.Template\Simple.Wpf.Template.csproj">
-      <Project>{3C3ED4EA-DC15-4286-B023-4951DFDDCB35}</Project>
-      <Name>Simple.Wpf.Template</Name>
-    </ProjectReference>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
