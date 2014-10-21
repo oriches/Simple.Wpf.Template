@@ -2,11 +2,11 @@ namespace Simple.Wpf.Template.ViewModels
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Globalization;
     using System.Linq;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
+    using Collections;
     using Extensions;
     using Models;
     using NLog;
@@ -17,7 +17,7 @@ namespace Simple.Wpf.Template.ViewModels
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly CompositeDisposable _disposable;
-        private readonly ObservableCollection<string> _log;
+        private readonly RangeObservableCollection<string> _log;
 
         private string _cpu;
         private string _managedMemory;
@@ -46,7 +46,7 @@ namespace Simple.Wpf.Template.ViewModels
             ManagedMemory = Constants.DefaultManagedMemoryString;
             TotalMemory = Constants.DefaultTotalMemoryString;
 
-            _log = new ObservableCollection<string>();
+            _log = new RangeObservableCollection<string>();
             
             var target = (LimitedMemoryTarget) LogManager.Configuration.FindTargetByName("memory");
             _disposable = new CompositeDisposable
