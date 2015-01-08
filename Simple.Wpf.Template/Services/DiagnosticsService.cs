@@ -19,12 +19,12 @@ namespace Simple.Wpf.Template.Services
         private readonly ISchedulerService _schedulerService;
         private readonly CompositeDisposable _disposable;
         private readonly IConnectableObservable<Counters> _countersObservable;
-        private readonly IConnectableObservable<int> _fpsObservable;
-        private readonly Queue<long> _fpsQueue;
+        private readonly IConnectableObservable<int> _rpsObservable;
+        private readonly Queue<long> _rpsQueue;
         private readonly object _sync;
         private readonly LimitedMemoryTarget _loggingTarget;
 
-        private bool _fpsConnected;
+        private bool _rpsConnected;
         private bool _countersConnected;
         
         internal sealed class Counters
@@ -105,11 +105,11 @@ namespace Simple.Wpf.Template.Services
                 .CombineLatest(idleService.Idling.Buffer(Constants.DiagnosticsIdleBuffer, schedulerService.TaskPool).Where(x => x.Any()), (x, y) => x)
                 .Replay(1);
 
-            _fpsQueue = new Queue<long>();
-            _fpsObservable = Observable.FromEventPattern<EventHandler, EventArgs>(h => CompositionTarget.Rendering += h,
+            _rpsQueue = new Queue<long>();
+            _rpsObservable = Observable.FromEventPattern<EventHandler, EventArgs>(h => CompositionTarget.Rendering += h,
                     h => CompositionTarget.Rendering -= h)
                     .Synchronize()
-                    .Select(x => CalculateFps())
+                    .Select(x => CalculateRps())
                     .Publish();
 
             _loggingTarget = (LimitedMemoryTarget)LogManager.Configuration.FindTargetByName("memory");
@@ -155,13 +155,13 @@ namespace Simple.Wpf.Template.Services
             }
         }
 
-        public IObservable<int> Fps
+        public IObservable<int> Rps
         {
             get
             {
-                ConnectFpsObservable();
+                ConnectRpsObservable();
                 
-                return _fpsObservable.DistinctUntilChanged();
+                return _rpsObservable.DistinctUntilChanged();
             }
         }
         
@@ -326,28 +326,28 @@ namespace Simple.Wpf.Template.Services
             }
         }
 
-        private void ConnectFpsObservable()
+        private void ConnectRpsObservable()
         {
-            if (_fpsConnected)
+            if (_rpsConnected)
             {
                 return;
             }
 
             lock (_sync)
             {
-                if (_fpsConnected)
+                if (_rpsConnected)
                 {
                     return;
                 }
 
-                var disposable = _fpsObservable.Connect();
+                var disposable = _rpsObservable.Connect();
                 _disposable.Add(Disposable.Create(() =>
                 {
                     disposable.Dispose();
-                    _fpsQueue.Clear();
+                    _rpsQueue.Clear();
                 }));
 
-                _fpsConnected = true;
+                _rpsConnected = true;
             }
         }
 
@@ -368,17 +368,17 @@ namespace Simple.Wpf.Template.Services
                 .SelectMany(x => x);
         }
 
-        private int CalculateFps()
+        private int CalculateRps()
         {
             var now = DateTime.Now;
             var endTime = now.Ticks;
             var startTime = now.AddSeconds(-1).Ticks;
 
-            while (_fpsQueue.Any())
+            while (_rpsQueue.Any())
             {
-                if (_fpsQueue.Peek() < startTime)
+                if (_rpsQueue.Peek() < startTime)
                 {
-                    _fpsQueue.Dequeue();
+                    _rpsQueue.Dequeue();
 
                     continue;
                 }
@@ -386,8 +386,8 @@ namespace Simple.Wpf.Template.Services
                 break;
             }
 
-            _fpsQueue.Enqueue(endTime);
-            return _fpsQueue.Count;
+            _rpsQueue.Enqueue(endTime);
+            return _rpsQueue.Count;
         }
     }
 }

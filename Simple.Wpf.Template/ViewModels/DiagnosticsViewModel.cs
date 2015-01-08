@@ -21,7 +21,7 @@ namespace Simple.Wpf.Template.ViewModels
         private string _cpu;
         private string _managedMemory;
         private string _totalMemory;
-        private string _fps;
+        private string _rps;
         
         internal sealed class FormattedMemory
         {
@@ -39,7 +39,7 @@ namespace Simple.Wpf.Template.ViewModels
         {
             Id = string.Format("Identifier: {0}", Guid.NewGuid());
 
-            Fps = Constants.DefaultFpsString;
+            Rps = Constants.DefaultRpsString;
             Cpu = Constants.DefaultCpuString;
             ManagedMemory = Constants.DefaultManagedMemoryString;
             TotalMemory = Constants.DefaultTotalMemoryString;
@@ -57,14 +57,14 @@ namespace Simple.Wpf.Template.ViewModels
                             _log.Clear();
                         }),
 
-                diagnosticsService.Fps
-                    .Select(FormatFps)
+                diagnosticsService.Rps
+                    .Select(FormatRps)
                     .ObserveOn(schedulerService.Dispatcher)
-                    .Subscribe(x => Fps = x,
+                    .Subscribe(x => Rps = x,
                         e =>
                         {
                             Logger.Error(e);
-                            Fps = Constants.DefaultFpsString;
+                            Rps = Constants.DefaultRpsString;
                         }),
 
                 diagnosticsService.Cpu
@@ -105,16 +105,16 @@ namespace Simple.Wpf.Template.ViewModels
 
         public IEnumerable<string> Log { get { return _log; } }
 
-        public string Fps
+        public string Rps
         {
             get
             {
-                return _fps;
+                return _rps;
             }
 
             private set
             {
-                SetPropertyAndNotify(ref _fps, value, () => Fps);
+                SetPropertyAndNotify(ref _rps, value, () => Rps);
             }
         }
 
@@ -157,9 +157,9 @@ namespace Simple.Wpf.Template.ViewModels
             }
         }
 
-        private static string FormatFps(int fps)
+        private static string FormatRps(int rps)
         {
-            return "Render: " + fps.ToString(CultureInfo.InvariantCulture) + " FPS";
+            return "Render: " + rps.ToString(CultureInfo.InvariantCulture) + " RPS";
         }
 
         private static string FormatCpu(int cpu)

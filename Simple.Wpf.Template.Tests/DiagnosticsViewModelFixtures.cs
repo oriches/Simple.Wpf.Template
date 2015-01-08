@@ -21,7 +21,7 @@ namespace Simple.Wpf.Template.Tests
         private Mock<IDiagnosticsService> _diagnosticService;
         private Subject<int> _cpuSubject;
         private Subject<Memory> _memorySubject;
-        private Subject<int> _fpsSubject;
+        private Subject<int> _rpsSubject;
         private Subject<string> _logSubject;
 
         [SetUp]
@@ -32,8 +32,8 @@ namespace Simple.Wpf.Template.Tests
 
             _diagnosticService = new Mock<IDiagnosticsService>();
 
-            _fpsSubject = new Subject<int>();
-            _diagnosticService.Setup(x => x.Fps).Returns(_fpsSubject);
+            _rpsSubject = new Subject<int>();
+            _diagnosticService.Setup(x => x.Rps).Returns(_rpsSubject);
 
             _cpuSubject = new Subject<int>();
             _diagnosticService.Setup(x => x.Cpu).Returns(_cpuSubject);
@@ -86,14 +86,14 @@ namespace Simple.Wpf.Template.Tests
         }
         
         [Test]
-        public void when_created_fps_is_default_value()
+        public void when_created_rps_is_default_value()
         {
             // ARRANGE
             var viewModel = new DiagnosticsViewModel(_diagnosticService.Object, _schedulerService);
 
             // ACT
             // ASSERT
-            Assert.That(viewModel.Fps, Is.EqualTo(Constants.DefaultFpsString));
+            Assert.That(viewModel.Rps, Is.EqualTo(Constants.DefaultRpsString));
         }
 
         [Test]
@@ -130,33 +130,33 @@ namespace Simple.Wpf.Template.Tests
         }
 
         [Test]
-        public void fps_value_is_formatted_when_diagnostics_service_pumps_fps()
+        public void rps_value_is_formatted_when_diagnostics_service_pumps_rps()
         {
             // ARRANGE
             var viewModel = new DiagnosticsViewModel(_diagnosticService.Object, _schedulerService);
 
             // ACT
-            _fpsSubject.OnNext(66);
+            _rpsSubject.OnNext(66);
 
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2));
 
             // ASSERT
-            Assert.That(viewModel.Fps, Is.EqualTo("Render: 66 FPS"));
+            Assert.That(viewModel.Rps, Is.EqualTo("Render: 66 RPS"));
         }
 
         [Test]
-        public void fps_value_is_default_value_when_diagnostics_service_fps_errors()
+        public void rps_value_is_default_value_when_diagnostics_service_rps_errors()
         {
             // ARRANGE
             var viewModel = new DiagnosticsViewModel(_diagnosticService.Object, _schedulerService);
 
             // ACT
-            _fpsSubject.OnError(new Exception("blah!"));
+            _rpsSubject.OnError(new Exception("blah!"));
 
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(1));
 
             // ASSERT
-            Assert.That(viewModel.Fps, Is.EqualTo(Constants.DefaultFpsString));
+            Assert.That(viewModel.Rps, Is.EqualTo(Constants.DefaultRpsString));
         }
 
         [Test]
@@ -269,10 +269,10 @@ namespace Simple.Wpf.Template.Tests
 
             _memorySubject.OnNext(new Memory(totalMemory, managedMemory));
             _cpuSubject.OnNext(42);
-            _fpsSubject.OnNext(65);
+            _rpsSubject.OnNext(65);
 
             // ASSERT
-            Assert.That(viewModel.Fps, Is.EqualTo(Constants.DefaultFpsString));
+            Assert.That(viewModel.Rps, Is.EqualTo(Constants.DefaultRpsString));
             Assert.That(viewModel.Cpu, Is.EqualTo(Constants.DefaultCpuString));
             Assert.That(viewModel.TotalMemory, Is.EqualTo(Constants.DefaultTotalMemoryString));
             Assert.That(viewModel.ManagedMemory, Is.EqualTo(Constants.DefaultManagedMemoryString));

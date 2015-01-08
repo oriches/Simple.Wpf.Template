@@ -67,8 +67,8 @@ namespace Simple.Wpf.Template
                 var listenDisposable = heartbeat.Listen
                     .SelectMany(x => dianosticsService.Memory.Take(1), (x, y) => y)
                     .SelectMany(x => dianosticsService.Cpu.Take(1), (x, y) => new Tuple<Memory, int>(x, y))
-                    .SelectMany(x => dianosticsService.Fps.Take(1), (x, y) => new Tuple<Memory, int, int>(x.Item1, x.Item2, y))
-                    .Subscribe(x => Logger.Info("Heartbeat (Memory={0}, CPU={1}%, FPS={2})", x.Item1.WorkingSetPrivateAsString(), x.Item2, x.Item3));
+                    .SelectMany(x => dianosticsService.Rps.Take(1), (x, y) => new Tuple<Memory, int, int>(x.Item1, x.Item2, y))
+                    .Subscribe(x => Logger.Info("Heartbeat (Memory={0}, CPU={1}%, RPS={2})", x.Item1.WorkingSetPrivateAsString(), x.Item2, x.Item3));
 
                 _disposable.Add(listenDisposable);
                 _disposable.Add(heartbeat);

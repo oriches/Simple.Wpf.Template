@@ -116,7 +116,7 @@ namespace Simple.Wpf.Template.Tests
             var called = false;
             var service = new DiagnosticsService(_idleService.Object, _schedulerService);
             
-            service.Fps.Subscribe(x => { called = true; });
+            service.Rps.Subscribe(x => { called = true; });
             service.Cpu.Subscribe(x => { called = true; });
             service.Memory.Subscribe(x => { called = true; });
 
