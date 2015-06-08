@@ -8,7 +8,7 @@ namespace Simple.Wpf.Template.Services
     using System.Windows;
     using Extensions;
     using NLog;
-    using Duration = Template.Duration;
+    using Duration = Services.Duration;
 
     public sealed class IdleService : IIdleService, IDisposable
     {
@@ -40,7 +40,7 @@ namespace Simple.Wpf.Template.Services
 
         public void Dispose()
         {
-            using (Duration.Measure(Logger, "Dispose"))
+            using (Services.Duration.Measure(Logger, "Dispose"))
             {
                 _disposable.Dispose();
             }

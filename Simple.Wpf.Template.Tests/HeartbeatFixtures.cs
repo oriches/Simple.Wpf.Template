@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Reactive;
     using NUnit.Framework;
+    using Services;
     using Template;
 
     [TestFixture]

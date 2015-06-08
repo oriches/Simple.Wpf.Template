@@ -6,6 +6,7 @@ namespace Simple.Wpf.Template.Tests
     using Helpers;
     using NLog;
     using NUnit.Framework;
+    using Services;
     using Template;
 
     [TestFixture]

@@ -1,4 +1,4 @@
-namespace Simple.Wpf.Template
+namespace Simple.Wpf.Template.Services
 {
     using System;
     using System.Diagnostics;
