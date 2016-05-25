@@ -1,6 +1,8 @@
 Simple.Wpf.Template
 ===================
 
+[![Build status](https://ci.appveyor.com/api/projects/status/ffto3qopubal9rdu/branch/master?svg=true)](https://ci.appveyor.com/project/oriches/simple-wpf-template/branch/master)
+
 This is 'my' canonical example for a WPF solution based on an MMVM approach using IoC, logging, and asynchronous invocations. All external 
 
 **Thrid party libraries are resolved using NuGet.**
