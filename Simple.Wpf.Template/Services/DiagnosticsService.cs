@@ -35,9 +35,9 @@ namespace Simple.Wpf.Template.Services
                 Cpu = cpuCounter;
             }
 
-            public PerformanceCounter WorkingSet { get; private set; }
+            public PerformanceCounter WorkingSet { get; }
 
-            public PerformanceCounter Cpu { get; private set; }
+            public PerformanceCounter Cpu { get; }
         }
 
         public DiagnosticsService(IIdleService idleService, ISchedulerService schedulerService)
@@ -123,14 +123,8 @@ namespace Simple.Wpf.Template.Services
             }
         }
 
-        public IObservable<string> Log
-        {
-            get
-            {
-                return StartLogObservable();
-            }
-        }
-        
+        public IObservable<string> Log => StartLogObservable();
+
         public IObservable<Memory> Memory
         {
             get

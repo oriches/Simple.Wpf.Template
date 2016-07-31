@@ -96,7 +96,7 @@ namespace Simple.Wpf.Template
 
                 if (delta > Constants.UiFreeze)
                 {
-                    Debug.WriteLine("UI Freeze = {0} ms", delta.TotalMilliseconds);
+                    Debug.WriteLine($"UI Freeze = {delta.TotalMilliseconds} ms");
                 }
             };
 

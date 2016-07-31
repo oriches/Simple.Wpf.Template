@@ -40,7 +40,7 @@ namespace Simple.Wpf.Template.Tests
             var logger = LogManager.GetCurrentClassLogger();
             var memoryTarget = (LimitedMemoryTarget)LogManager.Configuration.FindTargetByName("memory");
             
-            var message = string.Format("Message 1 - {0}", Guid.NewGuid());
+            var message = $"Message 1 - {Guid.NewGuid()}";
             
             // ACT
             using (Duration.Measure(logger, message))
@@ -62,7 +62,7 @@ namespace Simple.Wpf.Template.Tests
             var logger = LogManager.GetCurrentClassLogger();
             var memoryTarget = (LimitedMemoryTarget)LogManager.Configuration.FindTargetByName("memory");
 
-            var message = string.Format("Message 1 - {0}", Guid.NewGuid());
+            var message = $"Message 1 - {Guid.NewGuid()}";
 
             // ACT
             using (Duration.Measure(logger, message))

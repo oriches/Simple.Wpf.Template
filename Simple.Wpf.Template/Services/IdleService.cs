@@ -14,7 +14,7 @@ namespace Simple.Wpf.Template.Services
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IConnectableObservable<EventPattern<EventArgs>> _idleObservable;
+        private readonly IConnectableObservable<EventPattern<object>> _idleObservable;
         private readonly IDisposable _disposable;
 
         public IdleService(ISchedulerService schedulerService)
@@ -33,10 +33,7 @@ namespace Simple.Wpf.Template.Services
             _disposable = Disposable.Empty;
         }
 
-        public IObservable<Unit> Idling
-        {
-            get { return _idleObservable.AsUnit(); }
-        }
+        public IObservable<Unit> Idling => _idleObservable.AsUnit();
 
         public void Dispose()
         {

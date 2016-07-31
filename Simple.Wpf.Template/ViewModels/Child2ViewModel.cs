@@ -35,7 +35,7 @@ namespace Simple.Wpf.Template.ViewModels
             }
         }
 
-        public string Title { get { return "Child 2"; } }
+        public string Title => "Child 2";
 
         public ICommand DelayCommand { get; private set; }
     }

@@ -25,8 +25,8 @@ namespace Simple.Wpf.Template.ViewModels
         
         internal sealed class FormattedMemory
         {
-            public string ManagedMemory { get; private set; }
-            public string TotalMemory { get; private set; }
+            public string ManagedMemory { get; }
+            public string TotalMemory { get; }
 
             public FormattedMemory(string managedMemory, string totalMemory)
             {
@@ -37,7 +37,7 @@ namespace Simple.Wpf.Template.ViewModels
 
         public DiagnosticsViewModel(IDiagnosticsService diagnosticsService, ISchedulerService schedulerService)
         {
-            Id = string.Format("Identifier: {0}", Guid.NewGuid());
+            Id = $"Identifier: {Guid.NewGuid()}";
 
             Rps = Constants.DefaultRpsString;
             Cpu = Constants.DefaultCpuString;
@@ -103,7 +103,7 @@ namespace Simple.Wpf.Template.ViewModels
 
         public string Id { get; private set; }
 
-        public IEnumerable<string> Log { get { return _log; } }
+        public IEnumerable<string> Log => _log;
 
         public string Rps
         {
@@ -165,14 +165,14 @@ namespace Simple.Wpf.Template.ViewModels
         private static string FormatCpu(int cpu)
         {
             return cpu < 10
-                ? string.Format("CPU: 0{0} %", cpu.ToString(CultureInfo.InvariantCulture))
-                : string.Format("CPU: {0} %", cpu.ToString(CultureInfo.InvariantCulture));
+                ? $"CPU: 0{cpu.ToString(CultureInfo.InvariantCulture)} %"
+                : $"CPU: {cpu.ToString(CultureInfo.InvariantCulture)} %";
         }
 
         private static FormattedMemory FormatMemory(Memory memory)
         {
-            var managedMemory = string.Format("Managed Memory: {0}", memory.ManagedAsString());
-            var totalMemory = string.Format("Total Memory: {0}", memory.WorkingSetPrivateAsString());
+            var managedMemory = $"Managed Memory: {memory.ManagedAsString()}";
+            var totalMemory = $"Total Memory: {memory.WorkingSetPrivateAsString()}";
 
             return new FormattedMemory(managedMemory, totalMemory);
         }

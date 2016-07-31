@@ -52,8 +52,8 @@ namespace Simple.Wpf.Template.Tests
             LogHelper.ReconfigureLoggerToLevel(LogLevel.Error);
             var logger = LogManager.GetCurrentClassLogger();
             
-            var message1 = string.Format("Message 1 - {0}", Guid.NewGuid());
-            var message2 = string.Format("Message 2 - {0}", Guid.NewGuid());
+            var message1 = $"Message 1 - {Guid.NewGuid()}";
+            var message2 = $"Message 2 - {Guid.NewGuid()}";
 
             var viewModel = new DiagnosticsViewModel(_diagnosticService.Object, _schedulerService);
 

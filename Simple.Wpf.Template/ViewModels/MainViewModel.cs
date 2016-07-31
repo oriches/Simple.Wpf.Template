@@ -9,7 +9,7 @@ namespace Simple.Wpf.Template.ViewModels
             Child2 = child2;
         }
 
-        public string Title { get { return "Main"; } }
+        public string Title => "Main";
 
         public Child1ViewModel Child1 { get; private set; }
 

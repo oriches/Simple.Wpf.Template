@@ -42,8 +42,8 @@ namespace Simple.Wpf.Template.Models
             Managed = managed;
         }
 
-        public decimal WorkingSetPrivate { get; private set; }
+        public decimal WorkingSetPrivate { get; }
 
-        public decimal Managed { get; private set; }
+        public decimal Managed { get; }
     }
 }

@@ -24,7 +24,7 @@ namespace Simple.Wpf.Template.Extensions
 
         private static string ValueAsString(Func<decimal> valueFunc, MemoryUnits units, int decimalPlaces)
         {
-            return string.Format("{0:0.00} {1}", decimal.Round(valueFunc() * GetMultipler(units), decimalPlaces), GetUnitString(units));
+            return $"{decimal.Round(valueFunc()*GetMultipler(units), decimalPlaces):0.00} {GetUnitString(units)}";
         }
 
         private static decimal GetMultipler(MemoryUnits units)
