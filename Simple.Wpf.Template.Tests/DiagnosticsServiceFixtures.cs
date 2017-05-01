@@ -42,16 +42,16 @@ namespace Simple.Wpf.Template.Tests
             var service = new DiagnosticsService(_idleService.Object, _schedulerService);
             service.Cpu.Subscribe(values.Add);
 
-            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10));
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(20));
 
             // ACT
             _idling.OnNext(Unit.Default);
 
-            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10));
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(20));
 
             _idling.OnNext(Unit.Default);
 
-            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(10));
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(20));
 
             // ASSERT
             Assert.That(values, Is.Not.Empty);
