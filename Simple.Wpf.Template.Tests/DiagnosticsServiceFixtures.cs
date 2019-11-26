@@ -39,23 +39,25 @@ namespace Simple.Wpf.Template.Tests
             // ARRANGE
             var values = new List<int>();
 
-            var service = new DiagnosticsService(_idleService.Object, _schedulerService);
-            service.Cpu.Subscribe(values.Add);
+            using (var service = new DiagnosticsService(_idleService.Object, _schedulerService))
+            {
+                service.Cpu.Subscribe(values.Add);
 
-            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(20));
+                _testScheduler.AdvanceBy(TimeSpan.FromSeconds(20));
 
-            // ACT
-            _idling.OnNext(Unit.Default);
+                // ACT
+                _idling.OnNext(Unit.Default);
 
-            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(20));
+                _testScheduler.AdvanceBy(TimeSpan.FromSeconds(20));
 
-            _idling.OnNext(Unit.Default);
+                _idling.OnNext(Unit.Default);
 
-            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(20));
+                _testScheduler.AdvanceBy(TimeSpan.FromSeconds(20));
 
-            // ASSERT
-            Assert.That(values, Is.Not.Empty);
-            Assert.That(values.Count, Is.EqualTo(2));
+                // ASSERT
+                Assert.That(values, Is.Not.Empty);
+                Assert.That(values.Count, Is.EqualTo(2));
+            }
         }
 
         [Test]
