@@ -349,16 +349,15 @@ namespace Simple.Wpf.Template.Services
         {
             var existingLog = Enumerable.Empty<string>();
             return Observable.Interval(Constants.DiagnosticsLogInterval, _schedulerService.TaskPool)
-                .Synchronize()
                 .Select(x =>
                 {
-                    var currentLog = _loggingTarget.Logs.ToArray();
-                    var delta = currentLog.Except(existingLog).ToArray();
+                    var currentLog = _loggingTarget?.Logs.ToArray();
+                    var delta = currentLog?.Except(existingLog).ToArray();
                     existingLog = currentLog;
 
                     return delta;
                 })
-                .Where(x => x.Any())
+                .Where(x => x != null && x.Any())
                 .SelectMany(x => x);
         }
 
