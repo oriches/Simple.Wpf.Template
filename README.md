@@ -16,7 +16,7 @@ The idea is to prevent me from re-creating the scaffolding\infrastructure for an
 
 **IoC** - _implmented using Autofac, all services and key (major) ViewModels are resolved via the IoC container,_
 
-**Logging** - _implemented using NLog, writes to file currently in the 'C:\temp' directory,_
+**Logging** - _implemented using NLog, writes to file currently in the '%TEMP_FOLDER%\Simple.Wpf.Template' directory,_
 
 **Async Support** - _implemented using Reactive Extensions & TPL (async / await),_
 
