@@ -34,7 +34,7 @@ namespace Simple.Wpf.Template.Commands
 
         public virtual void Execute(object parameter)
         {
-            var typedParameter = parameter is T ? (T)parameter : default(T);
+            var typedParameter = parameter is T p ? p : default;
 
             if (CanExecute(typedParameter))
             {
@@ -44,13 +44,13 @@ namespace Simple.Wpf.Template.Commands
 
         public virtual bool CanExecute(object parameter)
         {
-            return _canExecute(parameter is T ? (T)parameter : default(T));
+            return _canExecute(parameter is T p ? p : default);
         }
 
         public event EventHandler CanExecuteChanged
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
     }
 

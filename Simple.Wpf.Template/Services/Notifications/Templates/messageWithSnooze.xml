@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+
+<toast scenario="urgent">
+	<audio silent="true" />
+	<visual>
+		<binding template="ToastText04">
+			<text id="1">{0}</text>
+			<text id="2">{1}</text>
+			<text id="3">{2}</text>
+		</binding>
+	</visual>
+	<actions>
+		<input id="snoozeTime" type="selection" defaultInput="5">
+			<selection id="5" content="5 minutes" />
+			<selection id="10" content="10 minutes" />
+			<selection id="15" content="15 minutes" />
+			<selection id="30" content="30 minutes" />
+		</input>
+		<action activationType="system" arguments="snooze" hint-InputId="snoozeTime" content="" />
+		<action activationType="system" arguments="dismiss" content="" />
+	</actions>
+</toast>

@@ -1,0 +1,13 @@
+﻿<v:SharedResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:v="clr-namespace:Simple.Wpf.Template.Views">
+
+    <Color x:Key="Simple.Wpf.Template.Colors.Accent">#FF0094FF</Color>
+
+    <Color x:Key="Simple.Wpf.Template.Colors.Accent2">#990094FF</Color>
+
+    <Color x:Key="Simple.Wpf.Template.Colors.Accent3">#660094FF</Color>
+
+    <Color x:Key="Simple.Wpf.Template.Colors.Accent4">#330094FF</Color>
+
+</v:SharedResourceDictionary>

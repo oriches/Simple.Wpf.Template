@@ -21,9 +21,9 @@ namespace Simple.Wpf.Template.Collections
                 {
                     foreach (var handler in handlers.GetInvocationList().Cast<NotifyCollectionChangedEventHandler>())
                     {
-                        if (handler.Target is CollectionView)
+                        if (handler.Target is CollectionView view)
                         {
-                            ((CollectionView)handler.Target).Refresh();
+                            view.Refresh();
                         }
                         else
                         {

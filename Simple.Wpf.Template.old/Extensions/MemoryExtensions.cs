@@ -8,7 +8,7 @@ namespace Simple.Wpf.Template.Extensions
     public static class MemoryExtensions
     {
         private static readonly IDictionary<MemoryUnits, string> UnitsAsString = new Dictionary<MemoryUnits, string>();
-        private static readonly IDictionary<MemoryUnits, decimal> UnitsMulitpler = new Dictionary<MemoryUnits, decimal>();
+        private static readonly IDictionary<MemoryUnits, decimal> UnitsMultiplier = new Dictionary<MemoryUnits, decimal>();
 
         private static readonly Type MemoryUnitsType = typeof(MemoryUnits);
 
@@ -24,27 +24,25 @@ namespace Simple.Wpf.Template.Extensions
 
         private static string ValueAsString(Func<decimal> valueFunc, MemoryUnits units, int decimalPlaces)
         {
-            return $"{decimal.Round(valueFunc()*GetMultipler(units), decimalPlaces):0.00} {GetUnitString(units)}";
+            return $"{decimal.Round(valueFunc()*GetMultiplier(units), decimalPlaces):0.00} {GetUnitString(units)}";
         }
 
-        private static decimal GetMultipler(MemoryUnits units)
+        private static decimal GetMultiplier(MemoryUnits units)
         {
-            decimal unitsMulitpler;
-            if (UnitsMulitpler.TryGetValue(units, out unitsMulitpler))
+            if (UnitsMultiplier.TryGetValue(units, out var unitsMultiplier))
             {
-                return unitsMulitpler;
+                return unitsMultiplier;
             }
 
-            unitsMulitpler = 1 / Convert.ToDecimal(units);
+            unitsMultiplier = 1 / Convert.ToDecimal(units);
 
-            UnitsMulitpler.Add(units, unitsMulitpler);
-            return unitsMulitpler;
+            UnitsMultiplier.Add(units, unitsMultiplier);
+            return unitsMultiplier;
         }
 
         private static string GetUnitString(MemoryUnits units)
         {
-            string unitsString;
-            if (UnitsAsString.TryGetValue(units, out unitsString))
+            if (UnitsAsString.TryGetValue(units, out var unitsString))
             {
                 return unitsString;
             }

@@ -39,8 +39,7 @@ namespace Simple.Wpf.Template.Extensions
         public static IObservable<PropertyChangedEventArgs>
             GetPropertyChangedEvents<TSource, TValue>(this TSource source, Expression<Func<TSource, TValue>> property) where TSource : INotifyPropertyChanged
         {
-            var memberExpression = property.Body as MemberExpression;
-            if (memberExpression == null)
+            if (!(property.Body is MemberExpression memberExpression))
             {
                 throw new Exception("Member expression is null!");
             }

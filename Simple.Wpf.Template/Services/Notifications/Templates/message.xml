@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+
+<toast scenario="urgent">
+	<audio silent="true" />
+	<visual>
+		<binding template="ToastText04">
+			<text id="1">{0}</text>
+			<text id="2">{1}</text>
+			<text id="3">{2}</text>
+		</binding>
+	</visual>
+	<actions>
+		<action activationType="system" arguments="dismiss" content="" />
+	</actions>
+</toast>

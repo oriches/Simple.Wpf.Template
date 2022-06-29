@@ -1,0 +1,20 @@
+﻿<v:SharedResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+                            xmlns:v="clr-namespace:Simple.Wpf.Template.Views">
+
+
+    <v:SharedResourceDictionary.MergedDictionaries>
+        <v:SharedResourceDictionary Source="../Colors/Colors.xaml" />
+    </v:SharedResourceDictionary.MergedDictionaries>
+
+    <SolidColorBrush x:Key="Simple.Wpf.Template.Brushes.Accent"
+                     Color="{StaticResource Simple.Wpf.Template.Colors.Accent}"
+                     po:Freeze="True" />
+
+    <SolidColorBrush x:Key="Simple.Wpf.Template.Brushes.Foreground.Highlight"
+                     Color="{StaticResource MahApps.Colors.ThemeBackground}"
+                     po:Freeze="True" />
+
+
+</v:SharedResourceDictionary>

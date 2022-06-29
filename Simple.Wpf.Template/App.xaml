@@ -1,0 +1,21 @@
+﻿<Application x:Class="Simple.Wpf.Template.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:v="clr-namespace:Simple.Wpf.Template.Views">
+    <Application.Resources>
+        <v:SharedResourceDictionary>
+            <v:SharedResourceDictionary.MergedDictionaries>
+                <v:SharedResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/styles/Controls.xaml" />
+                <v:SharedResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/styles/Fonts.xaml" />
+                <v:SharedResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/styles/themes/light.steel.xaml" />
+                <v:SharedResourceDictionary Source="Views/Colors/Colors.xaml" />
+                <v:SharedResourceDictionary Source="Views/Brushes/Brushes.xaml" />
+                <v:SharedResourceDictionary Source="Views/Styles/Styles.xaml" />
+                <v:SharedResourceDictionary Source="Views/Templates/ExceptionTemplate.xaml" />
+                <v:SharedResourceDictionary Source="Views/Templates/SettingsTemplate.xaml" />
+            </v:SharedResourceDictionary.MergedDictionaries>
+        </v:SharedResourceDictionary>
+    </Application.Resources>
+</Application>

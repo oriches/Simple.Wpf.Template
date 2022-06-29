@@ -1,0 +1,141 @@
+﻿<mah:MetroWindow x:Class="Simple.Wpf.Template.Views.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:ip="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                 xmlns:vm="clr-namespace:Simple.Wpf.Template.ViewModels"
+                 mc:Ignorable="d"
+                 Title="Simple.Wpf.Template"
+                 RenderOptions.ClearTypeHint="Enabled"
+                 ResizeMode="CanResizeWithGrip"
+                 TextOptions.TextFormattingMode="Display"
+                 SaveWindowPosition="True"
+                 TitleCharacterCasing="Normal"
+                 WindowState="Maximized"
+                 WindowStartupLocation="CenterScreen"
+                 WindowTitleBrush="{StaticResource Simple.Wpf.Template.Brushes.Accent}"
+                 d:DataContext="{d:DesignInstance vm:MainViewModel}">
+
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <ToggleButton x:Name="SettingsButton"
+                          ToolTip="Settings"
+                          IsChecked="{Binding ElementName=SettingsFlyout, Path=IsOpen, FallbackValue=False}">
+                <ip:PackIconFontAwesome Style="{StaticResource Simple.Wpf.Template.PackIconFontAwesome.Settings}" />
+            </ToggleButton>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
+
+    <mah:MetroWindow.Flyouts>
+        <mah:FlyoutsControl>
+            <mah:Flyout x:Name="SettingsFlyout"
+                        Content="{Binding Settings, Mode=OneWay}"
+                        Style="{StaticResource Simple.Wpf.Template.Flyout.Settings}" />
+        </mah:FlyoutsControl>
+    </mah:MetroWindow.Flyouts>
+
+    <Grid Margin="8">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="4" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="4" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="16" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0"
+                       Grid.Row="0"
+                       TextWrapping="Wrap"
+                       Text="Exceptions - enter some text and choose the exception you want to throw exception:" />
+
+        <TextBox x:Name="ExceptionText"
+                     Grid.Column="0"
+                     Grid.Row="2"
+                     Height="56"
+                     HorizontalAlignment="Stretch"
+                     HorizontalContentAlignment="Left"
+                     TextWrapping="Wrap"
+                     Text="Something went wrong!" />
+
+        <StackPanel Grid.Column="0"
+                    Grid.Row="4"
+                    Orientation="Horizontal">
+
+            <Button Margin="0,0,8,0"
+                    Content="Throw Exception from UI Thread"
+                    HorizontalAlignment="Left"
+                    Command="{Binding Path=ThrowFromUiThreadCommand, Mode=OneWay}"
+                    CommandParameter="{Binding Path=Text, ElementName=ExceptionText}" />
+
+            <Button Margin="0,0,8,0"
+                    Content="Throw Exception from Task"
+                    HorizontalAlignment="Left"
+                    Command="{Binding Path=ThrowFromTaskCommand, Mode=OneWay}"
+                    CommandParameter="{Binding Path=Text, ElementName=ExceptionText}" />
+
+            <Button Content="Throw Exception from Rx"
+                    HorizontalAlignment="Left"
+                    Command="{Binding Path=ThrowFromRxCommand, Mode=OneWay}"
+                    CommandParameter="{Binding Path=Text, ElementName=ExceptionText}" />
+
+        </StackPanel>
+
+        <TextBlock Grid.Column="0"
+                   Grid.Row="6"
+                   VerticalAlignment="Top"
+                   TextWrapping="Wrap"
+                   Text="TPL &amp; Rx exceptions are propagated from the Finalizer thread, there will be a delay between clicking the button and it appearing!" />
+
+        <Border Grid.Column="0"
+                Grid.Row="8"
+                Style="{StaticResource Simple.Wpf.Template.Style.Border.HorizontalSeparator}" />
+
+        <TextBlock Grid.Column="0"
+                   Grid.Row="10"
+                   TextWrapping="Wrap"
+                   Text="Windows Notifications - enter some text:" />
+
+        <TextBox x:Name="NotificationText"
+                 Grid.Column="0"
+                 Grid.Row="12"
+                 Width="400"
+                 Height="72"
+                 HorizontalAlignment="Left"
+                 HorizontalContentAlignment="Left"
+                 TextWrapping="Wrap"
+                 Text="Hello World!" />
+
+        <StackPanel Grid.Column="0"
+                    Grid.Row="14"
+                    Orientation="Horizontal">
+
+            <Button Margin="0,0,8,0"
+                    Content="Simple Notification"
+                    HorizontalAlignment="Left"
+                    Command="{Binding Path=SimpleNotificationCommand, Mode=OneWay}"
+                    CommandParameter="{Binding Path=Text, ElementName=NotificationText}" />
+
+            <Button Margin="0,0,8,0"
+                    Content="Snooze Notification"
+                    HorizontalAlignment="Left"
+                    Command="{Binding Path=SnoozeNotificationCommand, Mode=OneWay}"
+                    CommandParameter="{Binding Path=Text, ElementName=NotificationText}" />
+            
+        </StackPanel>
+    </Grid>
+
+</mah:MetroWindow>
