@@ -18,12 +18,12 @@ The idea is to prevent me from re-creating the scaffolding\infrastructure for an
 
 **Async Support** - _implemented using Reactive Extensions,_
 
-**Heartbeat** - _produces a regular heart beat for the application (currently writes to the log),_
-
-**Idling** - _a service producing notifications when the dispatcher enters idle state,_
-
-**Diagnostics** - _a service exposing the FPS, CPU and memory (managed &amp; unmanaged) consumptions,_
+**Modules & Module Loader** - _allows clean setup & configuration, see App.cs,_
 
 **Duration** - _a service for measuring the time for a block of code (Debug mode only),_
 
 **Gestures** - _a service for changing the system gestures (mouse) during the application, designed to be used with MVVM,_
+
+**Event Aggregator** - _a service for publishing / subscribing to application events using Rx syntax,_
+
+**notifications** - _a service for showing Windows toast notifications,_
