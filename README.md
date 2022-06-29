@@ -5,6 +5,8 @@ Simple.Wpf.Template
 
 This is 'my' canonical example for a WPF solution based on an MMVM approach using IoC, logging, and asynchronous invocations. All external 
 
+Built with .NET 6.0 and all the lovely syntatic-sugar available!
+
 **Thrid party libraries are resolved using NuGet.**
 
 
@@ -16,7 +18,7 @@ The idea is to prevent me from re-creating the scaffolding\infrastructure for an
 
 **Logging** - _implemented using NLog, writes to file currently in the 'C:\temp' directory,_
 
-**Async Support** - _implemented using Reactive Extensions,_
+**Async Support** - _implemented using Reactive Extensions & TPL (async / await),_
 
 **Modules & Module Loader** - _allows clean setup & configuration, see App.cs,_
 
@@ -26,4 +28,4 @@ The idea is to prevent me from re-creating the scaffolding\infrastructure for an
 
 **Event Aggregator** - _a service for publishing / subscribing to application events using Rx syntax,_
 
-**notifications** - _a service for showing Windows toast notifications,_
+**Notifications** - _a service for showing Windows toast notifications,_
